@@ -9,6 +9,9 @@
 }
 body{
   font-family: 'Tajawal', sans-serif;
+  width:100%;
+  overflow-x: hidden;
+  background-color: #f7f2fb;
   /* background-image: url("/bg1.svg");
   background-repeat: repeat; */
 }
@@ -35,3 +38,12 @@ body{
     transition: none !important;
   }
 } */
+
+
+/*  category menu item*/
+.category-item{
+  @apply relative after:absolute hover:after:translate-y-1 after:bottom-0 after:left-0 hover:after:w-full after:h-1 after:rounded after:bg-secondary after:transition-all after:duration-300 cursor-pointer text-lg;
+}
+.category-item.active{
+  @apply after:translate-y-1 after:bottom-0 after:left-0 after:w-full after:h-1 after:rounded after:bg-secondary after:transition-all after:duration-300 cursor-pointer text-lg;
+}
