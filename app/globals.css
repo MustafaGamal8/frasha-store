@@ -1,27 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+
+*{
+  z-index:1;
+}
+body{
+  font-family: 'Tajawal', sans-serif;
+  /* background-image: url("/bg1.svg");
+  background-repeat: repeat; */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+
+/* Add this CSS to your stylesheet */
+.icon-outline {
+  border: 2px solid transparent;
+  border-radius: 50%;
+  padding: 8px;
+  transition: border-color 0.3s ease-in-out;
+}
+
+.icon-outline:hover {
+  border-color: #fff; /* Change this to your desired hover color */
+}
+
+/* stop animation in mobile */
+/* @media screen and (max-width: 920px) {
+  * {
+    transition: none !important;
   }
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
+  *::after{
+    transition: none !important;
+  }
+} */
