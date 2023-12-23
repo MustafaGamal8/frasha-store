@@ -1,5 +1,5 @@
-import  { useState } from 'react';
-import {useRouter} from 'next/navigation'
+import { useState } from 'react';
+import { useRouter } from 'next/navigation'
 import Modal from 'react-modal';
 import { IoEye, IoEyeOff, IoClose } from 'react-icons/io5';
 import { Login } from '@/services/auth';
@@ -22,17 +22,18 @@ export default function LoginModal({ isOpen, onClose }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!username || !password) {
       toast.error('يرجي ادخال جميع البيانات');
     }
-    setLoading(true);    
+    setLoading(true);
 
-     if (!await Login({username, password})) {
+    if (!await Login({ username, password })) {
+      setLoading(false);
       return
-     }
-     setLoading(false);
+    }
     setUsername('');
+    setLoading(false);
     setPassword('');
     onClose();
     router.push('/dashboard');
@@ -41,8 +42,8 @@ export default function LoginModal({ isOpen, onClose }) {
 
 
   return (
-    <Modal isOpen={isOpen} onRequestClose={onClose} className="fixed inset-0 flex justify-center items-center bg-gray-700 bg-opacity-70 z-[101]">
-      <div className="relative flex flex-col justify-between bg-white rounded-lg p-8 w-[550px] h-[430px] max-w-full mx-4">
+    <Modal isOpen={isOpen} onRequestClose={onClose}  className="fixed inset-0 flex justify-center items-center bg-gray-700 bg-opacity-70 z-[10]">
+      <div className="relative flex flex-col justify-between bg-white rounded-lg p-8 w-[550px] h-[430px] max-w-full mx-4" > 
         <button onClick={onClose} className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 transition duration-300">
           <IoClose size={24} />
         </button>
@@ -85,7 +86,7 @@ export default function LoginModal({ isOpen, onClose }) {
           </button>
           {loading && <div className='flex mt-6 justify-center'><LoginLoader /></div>}
         </form>
-        <p className=' text-center  select-text text-sm'>تسجيل الدخول خاص بمسؤلين الموقع*</p>
+        <p className=' text-center  select-text text-sm'>تسجيل الدخول خاص بمسؤلين الموقع فقط*</p>
       </div>
     </Modal>
   );
