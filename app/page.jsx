@@ -4,6 +4,8 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import HomeProducts from "./components/HomeProducts";
 const Page = () => {
+
+
   return (
     <>
       <ScrollToTopButton />

@@ -1,5 +1,5 @@
 import Product from "./Product";
-
+import Link from "next/link";
 export default function HomeProducts() {
   return (
     <section className="w-full m-auto my-28 ">
@@ -12,15 +12,15 @@ export default function HomeProducts() {
     </ul>
 
     <section className="w-full flex flex-wrap items-center justify-center gap-9">
-      <div className="md:w-[330px] w-[90%] m-5"><Product /></div>
-      <div className="md:w-[330px] w-[90%] m-5"><Product /></div>
-      <div className="md:w-[330px] w-[90%] m-5"><Product /></div>
-      <div className="md:w-[330px] w-[90%] m-5"><Product /></div>
-      <div className="md:w-[330px] w-[90%] m-5"><Product /></div>
-      <div className="md:w-[330px] w-[90%] m-5"><Product /></div>
+      <div className="md:w-[330px] w-[75%] m-5"><Product /></div>
+      <div className="md:w-[330px] w-[75%] m-5"><Product /></div>
+      <div className="md:w-[330px] w-[75%] m-5"><Product /></div>
+      <div className="md:w-[330px] w-[75%] m-5"><Product /></div>
+      <div className="md:w-[330px] w-[75%] m-5"><Product /></div>
+      <div className="md:w-[330px] w-[75%] m-5"><Product /></div>
     </section>
 
-    <div className="w-[150px] rounded-lg p-4  bg-secondary text-white text-xl m-auto text-center cursor-pointer">عرض الكل</div>
+    <Link href={"/products"}  className="w-[150px] block  rounded-lg p-4 bg-primary  hover:bg-secondary text-white text-xl m-auto text-center cursor-pointer transition-all ">عرض الكل</Link>
 
   </section>
   )

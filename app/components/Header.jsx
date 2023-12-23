@@ -30,7 +30,7 @@ export default function Header() {
   return (
     <header>
       <section className="relative w-full h-[450px] bg-primary flex md:flex-row flex-col-reverse items-center  justify-around z-[-1] p-2 ">
-        <div className="w-[200px] md:w-[500px] md:h-full  rounded overflow-hidden"><Image className="h-full w-full obecjt-cover" src={i2} /></div>
+        <div className="w-[300px] md:w-[600px] h-full  rounded overflow-hidden"><Image className="h-full w-full object-contain" src={i2} alt="img" /></div>
         <h1 className="text-white md:text-3xl text-xl text-right">متخصصون في بيع منتجات الهاند ميد والتطريز <br />والهدايا و الملابس والاكسسورات</h1>
 
         <div className="w-full absolute -bottom-1 left-0 z-[-2] ">
@@ -41,14 +41,14 @@ export default function Header() {
         </div>
       </section>
 
-      <div className="w-full flex items-center justify-center mt-20 drop-shadow-md"><Image width={250} height={250} src={"/logo.png"} /></div>
+      <div className="w-full flex items-center justify-center md:mt-20 drop-shadow-md"><Image width={250} height={250} src={"/logo.png"} alt="img" /></div>
 
-      <section className="w-full flex flex-wrap items-center justify-center gap-16 ">
+      <section className="w-full flex flex-wrap items-center justify-center gap-16  p-4 ">
         {sectionData.map((item) => (
           <div key={item.id}
             className="group relative flex flex-col items-center gap-3 hover:bg-none bg-white p-4 px-8 md:px-12 rounded border-t-2 border-primary  drop-shadow-md"
           >
-            <span className=" absolute top-0 left-0 w-full h-0 group-hover:h-full bg-secondary transition-all duration-300 "></span>
+            <span className=" absolute top-0 left-0 w-full h-0 group-hover:h-full bg-primary transition-all duration-300 "></span>
             <div className="rounded p-5 bg-secondary group-hover:bg-white group-hover:text-secondary text-white">
               {item.icon}
             </div>

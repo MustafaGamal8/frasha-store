@@ -7,7 +7,7 @@ const Product = () => {
   return (
     <div className="w-full bg-primary drop-shadow-lg ">
       <section className="group relative p-6 bg-[#f6f6f6] w-full h-[350px] cursor-pointer">
-        <Image className="w-full h-full object-cover" src={p1} />
+        <Image className="w-full h-full object-cover" src={p1} alt="img" />
 
         <div className="group group-hover:h-[80px] h-[55px] md:h-0 w-full group-hover:flex absolute bottom-0 left-0 bg-gray-400 bg-opacity-50 z-[1] transition-all duration-500">
           <div className="md:hidden flex group-hover:flex items-center justify-around h-full w-full p-2">

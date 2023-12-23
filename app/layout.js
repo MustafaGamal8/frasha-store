@@ -1,5 +1,8 @@
-import NavBar from './components/Navbar'
+import Navbar from './components/Navbar'
 import './globals.css'
+
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const metadata = {
   title: 'Frasha Store',
@@ -13,9 +16,9 @@ export default function RootLayout({ children }) {
         <link rel="shortcut icon" href="/logo.png" type="image/x-icon" />
       </head>
       <body >
-        <NavBar />
-
-        {children}
+          <Navbar />
+          {children}
+        <ToastContainer />
       </body>
     </html>
   )
