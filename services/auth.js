@@ -16,10 +16,10 @@ export const Login = async ({username, password }) => {
       maxAge:  24 * 60 * 60, // 1 day
     })
 
-    toast.success("تم تسجيل الدخول بنجاح");
+    toast.success(response.data.message  || "تم تسجيل الدخول بنجاح");
     return true
   } catch (error) {
-    toast.error(  error.response.data.message || "فشل في تسجيل الدخول" );
     console.log(error)
+    toast.error(  error.response.data.error || "فشل في تسجيل الدخول" );
   }
 };

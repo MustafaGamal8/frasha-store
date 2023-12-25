@@ -5,7 +5,7 @@
 
 
 *{
-  /* z-index:1; */
+  z-index:1;
   font-family: 'Tajawal', sans-serif;
   scroll-behavior: smooth;  
 }
@@ -14,8 +14,7 @@ body{
   overflow-x: hidden;
   background-color: #f7f2fb;
   user-select: none;
-  /* background-image: url("/bg1.svg");
-  background-repeat: repeat; */
+  text-align: right;
 }
 
 

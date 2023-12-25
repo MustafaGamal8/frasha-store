@@ -1,6 +1,6 @@
 "use client";
 
-import "../styles/random.css";
+import "../../styles/random.css";
 
 export function LoginLoader() {
 
