@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 
 export default async function handler(req, res) {
-  if (req.method === 'POST') {
+  if (req.method == 'POST') {
     const { username, password } = req.body;
 
     // validition
@@ -45,6 +45,5 @@ export default async function handler(req, res) {
     res.status(200).json({ message: 'تم تسجيل الدخول بنجاح'  });
   } else {
     res.status(405).json({ error: 'Method Not Allowed' });
-
   }
 }

@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import sharp from 'sharp';
+import Jimp from 'jimp';
 
 const prisma = new PrismaClient();
 
@@ -72,11 +72,42 @@ const  uploadProduct = async (req,res) => {
       },
     });
 
-    for (const buffer of photos) {
-      const compressedImageBuffer = await sharp(Buffer.from(buffer, 'base64'))
-        .resize({ width: 900 })
-        .toBuffer()
+    // for (const buffer of photos) {
+    //   const compressedImageBuffer = await sharp(Buffer.from(buffer, 'base64'))
+    //     .resize({ width: 900 })
+    //     .toBuffer()
 
+
+    //   const photo = await prisma.photo.create({
+    //     data: {
+    //       photo: compressedImageBuffer,
+    //       product: {
+    //         connect: {
+    //           id: createdProduct.id,
+    //         },
+    //       }
+    //     },
+    //   });
+
+    //   await prisma.photo.update({
+    //     where: {
+    //       id: photo.id,
+    //     },
+    //     data: {
+    //       url: "/api/images/" + photo.id,
+    //     },
+
+    //   })
+    // }
+
+
+    for (const buffer of photos) {
+      const image = await Jimp.read(Buffer.from(buffer, 'base64'));
+
+      // Resize the image using Jimp
+      await image.resize(900, Jimp.AUTO); // Set width to 900 pixels, maintain aspect ratio for height
+
+      const compressedImageBuffer = await image.getBufferAsync(Jimp.MIME_JPEG);
 
       const photo = await prisma.photo.create({
         data: {
@@ -85,7 +116,7 @@ const  uploadProduct = async (req,res) => {
             connect: {
               id: createdProduct.id,
             },
-          }
+          },
         },
       });
 
@@ -94,10 +125,9 @@ const  uploadProduct = async (req,res) => {
           id: photo.id,
         },
         data: {
-          url: "/api/images/" + photo.id,
+          url: '/api/images/' + photo.id,
         },
-
-      })
+      });
     }
 
     return res.status(200).json({ message: 'تم اضافة المنتج بنجاح', productId: createdProduct.id });
