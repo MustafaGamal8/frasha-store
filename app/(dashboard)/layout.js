@@ -1,4 +1,7 @@
+import { ToastContainer } from "react-toastify"
 import Sidebar from "./dashboard/components/Sidebar"
+
+import 'react-toastify/dist/ReactToastify.css';
 
 export const metadata = {
   title: 'Dashboard - Frasha Store',
@@ -18,6 +21,9 @@ export default function Layout({ children }) {
         <Sidebar />
       </main>
 
+
+
+      <ToastContainer position="top-center"  autoClose={2000}/>
     </>
   )
 }

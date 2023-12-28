@@ -4,27 +4,29 @@ import Modal from 'react-modal';
 import getCategorys from '@/services/getCategorys';
 import { IoMdClose } from 'react-icons/io';
 import PostProduct from '@/services/postProduct';
+import { toast } from 'react-toastify';
 
 Modal.setAppElement('body');
 
 const AddProductModal = ({ isOpen, onClose }) => {
   const [productData, setProductData] = useState({
     name: '',
-    price: '',
+    price: 0,
     description: '',
     link: '',
     categoryId: '',
     photos: [],
+    photosUrls: []
   });
 
   const [selectedCategory, setSelectedCategory] = useState([]);
 
   useEffect(() => {
     (async () => {
-      const categories = await getCategorys();   
+      const categories = await getCategorys();
       setSelectedCategory(categories);
     })();
-  },[])
+  }, [])
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -38,31 +40,66 @@ const AddProductModal = ({ isOpen, onClose }) => {
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
-    setProductData({
-      ...productData,
-      photos: [...productData.photos, ...files],
+
+    const newPhotos = [];
+    const newPhotosUrls = [];
+
+    files.forEach((file) => {
+      const reader = new FileReader();
+
+      reader.onload = function (loadEvent) {
+        const fileBuffer = loadEvent.target.result;
+        const base64 = Buffer.from(fileBuffer).toString('base64');
+        const blob = new Blob([fileBuffer], { type: file.type });
+        const blobURL = URL.createObjectURL(blob);
+
+        // Update arrays with new file and blob URL
+        newPhotos.push(base64);
+        newPhotosUrls.push(blobURL);
+
+
+        if (newPhotos.length === files.length) {
+          setProductData({
+            ...productData,
+            photos: [...productData.photos, ...newPhotos],
+            photosUrls: [...productData.photosUrls, ...newPhotosUrls],
+          });
+        }
+      };
+
+      reader.readAsArrayBuffer(file);
     });
   };
 
+
+
   const removePhoto = (index) => {
     const updatedPhotos = [...productData.photos];
+    const updatedPhotosUrls = [...productData.photosUrls];
+    updatedPhotosUrls.splice(index, 1);
     updatedPhotos.splice(index, 1);
     setProductData({
       ...productData,
       photos: updatedPhotos,
+      photosUrls: updatedPhotosUrls,
     });
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("loading")
-    await PostProduct(productData);
+    const { name, price, description, link, categoryId, photos } = productData;
+    if (!name || !price || !description || !link || !categoryId || photos.length === 0) {
+      return toast.error('يجب تعبئة جميع الحقول');
+      
+    }
+    await PostProduct({ name, price, description, link, categoryId, photos });
   };
 
   return (
-    <Modal isOpen={isOpen} onRequestClose={onClose}  className="fixed inset-0 flex justify-center items-center bg-gray-700 bg-opacity-70 z-[10] overflow-y-auto mb-10">
+    <Modal isOpen={isOpen} onRequestClose={onClose} className="fixed inset-0 flex justify-center items-center bg-gray-700 bg-opacity-70 z-[10] overflow-y-auto mb-10">
       <div className="relative flex flex-col justify-between bg-white rounded-lg p-8 w-[550px]  max-w-full mx-4">
-      <button onClick={onClose} className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 transition duration-300">
+        <button onClick={onClose} className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 transition duration-300">
           <IoMdClose size={24} />
         </button>
         <h2 className="text-2xl font-bold mb-4 text-right">إضافة منتج جديد</h2>
@@ -85,7 +122,7 @@ const AddProductModal = ({ isOpen, onClose }) => {
               السعر
             </label>
             <input
-              type="text"
+              type="number"
               id="price"
               name="price"
               value={productData.price}
@@ -139,7 +176,7 @@ const AddProductModal = ({ isOpen, onClose }) => {
             </select>
           </div>
           <div className="my-4">
-            <label  className="block mb-2 text-sm font-semibold text-gray-700 text-right">
+            <label className="block mb-2 text-sm font-semibold text-gray-700 text-right">
               الصور
             </label>
             <label
@@ -157,13 +194,13 @@ const AddProductModal = ({ isOpen, onClose }) => {
               />
             </label>
             <div className="mt-2 grid grid-cols-2 gap-2">
-              {productData.photos.map((photo, index) => (
+              {productData.photosUrls.map((photo, index) => (
                 <div key={index} className="relative">
                   <span className="absolute top-0 right-0 m-1 cursor-pointer text-red-500" onClick={() => removePhoto(index)}>
                     X
                   </span>
                   <img
-                    src={URL.createObjectURL(photo)}
+                    src={photo}
                     alt={`Uploaded ${index}`}
                     className="w-full h-20 object-cover rounded-md"
                   />
