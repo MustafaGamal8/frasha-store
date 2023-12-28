@@ -12,18 +12,14 @@ export const config = {
 }
 
 export default async function handler(req, res) {
-  switch (req.method) {
-    case "GET":
-      getProduct(req, res);
-      break;
-    case "POST":
-      console.log("before");
-      await uploadProduct(req, res);
-      console.log("after");
-      break;
-    default:
-      res.status(405).json({ error: 'Method Not Allowed' });
-      break;
+
+  if (req.method == "GET") {
+    return getProduct(req, res);
+  }
+  else if (req.method == "POST") {
+    return uploadProduct(req, res);    
+  }else{
+    return res.status(405).json({ error: 'Method Not Allowed' });
   }
 }
 

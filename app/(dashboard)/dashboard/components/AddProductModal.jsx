@@ -93,7 +93,10 @@ const AddProductModal = ({ isOpen, onClose }) => {
       return toast.error('يجب تعبئة جميع الحقول');
       
     }
+    const loadingToast = toast.loading('جاري اضافة المنتج');
     await PostProduct({ name, price, description, link, categoryId, photos });
+    toast.dismiss(loadingToast);
+    
   };
 
   return (
