@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import LoadingProduct from "./LoadingProduct";
 import Product from "./Product";
@@ -7,7 +8,7 @@ export default function ProductsSection({ products }) {
   
   setTimeout(() => {
     setLoading(false);
-  }, 5000);
+  }, 2500);
   return (
     <section className="w-full flex flex-wrap items-center justify-center gap-9">
       

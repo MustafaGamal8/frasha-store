@@ -14,6 +14,7 @@ const fetchProducts = () => {
         id: true,
         name: true,
         price: true,
+        link: true,
         categoryId: true,
         photos: {
           select: {

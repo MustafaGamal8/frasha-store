@@ -5,7 +5,7 @@ export default async function handler(req, res) {
   if (req.method == "GET") {
     const prisma = new PrismaClient();
     try {
-      const categorys = await prisma.category.findMany(
+      const categories = await prisma.category.findMany(
         {
           select: {
             id: true,
@@ -13,7 +13,7 @@ export default async function handler(req, res) {
           }
         }
       );
-      return res.status(200).json(categorys);
+      return res.status(200).json(categories);
     } catch (error) {
       return res.status(500).json({ error: "لقد حدث خطأ ما" });
     }

@@ -36,6 +36,7 @@ async  function getProducts(page, categoryId) {
       name: true,
       price: true,
       categoryId: true,
+      link: true,
       photos: {
         select: {
           url: true
@@ -53,6 +54,7 @@ async  function getProducts(page, categoryId) {
         name: true,
         price: true,
         categoryId: true,
+        link: true,
         photos: {
           select: {
             url: true

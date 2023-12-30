@@ -105,6 +105,7 @@ const uploadProduct = async (req, res) => {
 
     for (const p of photos) {
       const compressedImageBuffer = await sharp(Buffer.from(p.data, 'base64'))
+      .resize({ width: 800 })
         .toBuffer()
 
       const photo = await prisma.photo.create({

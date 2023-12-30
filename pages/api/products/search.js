@@ -12,6 +12,7 @@ export default async function handler(req, res) {
           name: true,
           price: true,
           categoryId: true,
+          link: true,
           photos: {
             select: {
               url: true

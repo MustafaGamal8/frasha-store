@@ -5,11 +5,13 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export default function RootLayout({ children }) {
   return (
-    <main className='flex flex-col justify-between h-screen'>
+    <>
+      <ToastContainer autoClose={1000} />
+    <main className='flex flex-col justify-between h-screen '>
       <Navbar />
       {children}
       <Footer />
-      <ToastContainer autoClose={1000} />
     </main>
+    </>
   )
 }
