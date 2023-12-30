@@ -1,6 +1,7 @@
 "use client";
 import { useState } from 'react';
 import { HiOutlineHome, HiOutlineShoppingBag, HiOutlineCube, HiOutlineUser } from 'react-icons/hi2';
+import { AiOutlineBars } from "react-icons/ai";
 import { FiLogOut } from 'react-icons/fi';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -24,7 +25,8 @@ const Sidebar = () => {
     { text: 'لوحة التحكم', icon: <HiOutlineHome />, link: '/dashboard' },
     { text: 'الطلبات', icon: <HiOutlineShoppingBag />, link: '/dashboard/orders' },
     { text: 'المنتجات', icon: <HiOutlineCube />, link: '/dashboard/products' },
-    { text: 'المستخدمين', icon: <HiOutlineUser />, link: '/dashboard/admin' },
+    { text: 'الأقسام', icon: <AiOutlineBars />, link: '/dashboard/categories' },
+    { text: 'المستخدمين', icon: <HiOutlineUser />, link: '/dashboard/admins' },
   ];
 
 

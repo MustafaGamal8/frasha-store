@@ -1,4 +1,5 @@
 import './globals.css'
+import Loading from './loading'
 
 export const metadata = {
   title: 'Frasha Store',
@@ -13,6 +14,7 @@ export default function RootLayout({ children }) {
       </head>
       <body >
           {children}
+          <Loading />
       </body>
     </html>
   )

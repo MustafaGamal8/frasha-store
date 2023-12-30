@@ -1,10 +1,16 @@
 import axios from 'axios';
+import { getCookie } from 'cookies-next';
 import { toast } from 'react-toastify';
 
 export default async function PostProduct(requestBody) {
   try {
 
-    const response = await axios.post("/api/product", requestBody);
+    const token = await getCookie('token');
+    const response = await axios.post("/api/product", requestBody,{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     const { message, error } = response.data;
 
     if (error) {

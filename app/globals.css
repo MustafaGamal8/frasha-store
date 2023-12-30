@@ -29,6 +29,9 @@ body{
 .icon-outline:hover {
   border-color: #fff; /* Change this to your desired hover color */
 }
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px white inset; /* Change 'white' to your desired color */
+}
 
 /* stop animation in mobile */
 /* @media screen and (max-width: 920px) {

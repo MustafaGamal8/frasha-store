@@ -2,7 +2,7 @@ import { FaFacebook, FaInstagram } from 'react-icons/fa';
 
 export default function Footer() {
   return (
-    <footer id='footer' className="relative bg-secondary text-white py-10 pb-16">
+    <footer id='footer' className="relative bg-secondary text-white py-10 pb-16 mt-10">
       <div className="container mx-auto flex flex-row-reverse  items-center justify-between px-4">
           <div className='text-right'>
             <h2 className="text-xl font-semibold">متجر فراشة</h2>

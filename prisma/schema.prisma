@@ -28,6 +28,7 @@ model Photo {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
   photo      Bytes
   url        String?
+  type       String
   product    Product  @relation(fields: [productId], references: [id]) 
   productId  String   @db.ObjectId
 }

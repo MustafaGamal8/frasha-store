@@ -20,6 +20,7 @@ const AddProductModal = ({ isOpen, onClose }) => {
   });
 
   const [selectedCategory, setSelectedCategory] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -54,7 +55,7 @@ const AddProductModal = ({ isOpen, onClose }) => {
         const blobURL = URL.createObjectURL(blob);
 
         // Update arrays with new file and blob URL
-        newPhotos.push(base64);
+        newPhotos.push({ data: base64, type: file.type });
         newPhotosUrls.push(blobURL);
 
 
@@ -87,16 +88,18 @@ const AddProductModal = ({ isOpen, onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("loading")
     const { name, price, description, link, categoryId, photos } = productData;
     if (!name || !price || !description || !link || !categoryId || photos.length === 0) {
       return toast.error('يجب تعبئة جميع الحقول');
-      
+
     }
+
+    setLoading(true);
     const loadingToast = toast.loading('جاري اضافة المنتج');
     await PostProduct({ name, price, description, link, categoryId, photos });
     toast.dismiss(loadingToast);
-    
+    setLoading(false);
+
   };
 
   return (
@@ -117,6 +120,7 @@ const AddProductModal = ({ isOpen, onClose }) => {
               name="name"
               value={productData.name}
               onChange={handleInputChange}
+              disabled={loading}
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-primary"
             />
           </div>
@@ -130,6 +134,7 @@ const AddProductModal = ({ isOpen, onClose }) => {
               name="price"
               value={productData.price}
               onChange={handleInputChange}
+              disabled={loading}
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-primary"
             />
           </div>
@@ -142,6 +147,7 @@ const AddProductModal = ({ isOpen, onClose }) => {
               name="description"
               value={productData.description}
               onChange={handleInputChange}
+              disabled={loading}
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-primary"
               rows={4}
             />
@@ -156,6 +162,7 @@ const AddProductModal = ({ isOpen, onClose }) => {
               name="link"
               value={productData.link}
               onChange={handleInputChange}
+              disabled={loading}
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-primary"
             />
           </div>
@@ -168,6 +175,7 @@ const AddProductModal = ({ isOpen, onClose }) => {
               name="categoryId"
               value={productData.categoryId}
               onChange={handleInputChange}
+              disabled={loading}
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-primary"
             >
               <option value="" disabled>اختر الفئة</option>
@@ -192,6 +200,7 @@ const AddProductModal = ({ isOpen, onClose }) => {
                 id="photos"
                 name="photos"
                 onChange={handleFileChange}
+                disabled={loading}
                 className="hidden"
                 multiple
               />
@@ -213,7 +222,8 @@ const AddProductModal = ({ isOpen, onClose }) => {
           </div>
           <button
             type="submit"
-            className="w-full bg-primary text-white py-2 rounded-md transition duration-300 hover:bg-secondary"
+            disabled={loading}
+            className={`w-full bg-primary text-white py-2 rounded-md transition duration-300 hover:bg-secondary ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
             إضافة المنتج
           </button>

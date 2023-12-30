@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import sharp from 'sharp';
+import  Jwt  from 'jsonwebtoken';
 
 const prisma = new PrismaClient();
 
@@ -29,6 +30,24 @@ export default async function handler(req, res) {
 const uploadProduct = async (req, res) => {
 
   try {
+    let token = req.headers["authorization"];
+    token = token ? token.replace("Bearer ", "") : "";
+    const decodedToken = Jwt.decode(token);
+
+    if (!decodedToken) {
+      return res.status(401).json({ error: 'الرجاء تسجيل الدخول' });
+    }
+
+    const admin = await prisma.admin.findUnique({
+      where: {
+        id: decodedToken.userId
+      }
+    })
+
+    if (!admin) {
+      return res.status(401).json({ error: 'الرجاء تسجيل الدخول' });      
+    }
+
     const contentLength = req.headers['content-length'] ? parseInt(req.headers['content-length'], 10) : 0;
     const sizeInMB = contentLength / (1024 * 1024);
 
@@ -84,15 +103,14 @@ const uploadProduct = async (req, res) => {
       },
     });
 
-    for (const base64 of photos) {
-      const compressedImageBuffer = await sharp(Buffer.from(base64, 'base64'))
-        .resize({ width: 800 })
+    for (const p of photos) {
+      const compressedImageBuffer = await sharp(Buffer.from(p.data, 'base64'))
         .toBuffer()
-
 
       const photo = await prisma.photo.create({
         data: {
           photo: compressedImageBuffer,
+          type: p.type,
           product: {
             connect: {
               id: createdProduct.id,
