@@ -1,41 +1,21 @@
 "use client"
-import { useState } from "react";
+import {  useEffect, useState } from "react";
 import { IoAdd, IoCartOutline, IoFolderOpenOutline, IoListOutline, IoAddCircle } from "react-icons/io5";
 import Link from 'next/link';
 import AddProductModal from "./components/AddProductModal";
 import AddCategoryModal from "./components/AddCategoryModal";
+import { GetCategoriesCount, GetProductsCount } from "../logic/getCount";
 
 
 
-
-
-
-const items = [
-  {
-    title: 'المُنتجات',
-    number: '250',
-    icon: <IoCartOutline />,
-    to: '/dashboard/products',
-  },
-  {
-    title: 'الأقسام',
-    number: '150',
-    icon: <IoFolderOpenOutline />,
-    to: '/dashboard/categories',
-  },
-  {
-    title: 'الطلبات',
-    number: '200',
-    icon: <IoListOutline />,
-    to: '/dashboard/orders',
-  },
-];
 const Dashboard = () => {
   const [isModalsOpen, setIsModalsOpen] = useState({
     isProductModalOpen: false,
     isCategoryModalOpen: false
   });
-
+  const [productCount, setProductCount] = useState(0);
+  const [categoryCount, setCategoryCount] = useState(0);
+  const [orderCount, setOrderCount] = useState(0);
   const openModal = (modalName) => {
     modalName == "product" ? setIsModalsOpen({ isProductModalOpen: true }) : setIsModalsOpen({ isCategoryModalOpen: true });
   };
@@ -43,6 +23,37 @@ const Dashboard = () => {
   const closeModal = (modalName) => {
     modalName == "product" ? setIsModalsOpen({ isProductModalOpen: false }) : setIsModalsOpen({ isCategoryModalOpen: false });
   };
+
+  useEffect(() => {
+    (async () => {
+      const productsCount = await GetProductsCount();
+      setProductCount(productsCount);
+      const categoriesCount = await GetCategoriesCount();
+      setCategoryCount(categoriesCount);
+    })()    
+  },[])
+
+
+  const items = [
+    {
+      title: 'المُنتجات',
+      number: productCount,
+      icon: <IoCartOutline />,
+      to: '/dashboard/products',
+    },
+    {
+      title: 'الأقسام',
+      number: categoryCount, 
+      icon: <IoFolderOpenOutline />,
+      to: '/dashboard/categories',
+    },
+    {
+      title: 'الطلبات',
+      number: orderCount,
+      icon: <IoListOutline />,
+      to: '/dashboard/orders',
+    },
+  ];
 
 
   return (

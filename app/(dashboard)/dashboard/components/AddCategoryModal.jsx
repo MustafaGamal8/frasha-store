@@ -2,24 +2,21 @@
 import { useState } from 'react';
 import { IoMdClose } from 'react-icons/io';
 import  Modal  from 'react-modal';
+import  axios  from 'axios';
+import { toast } from 'react-toastify';
+import PostCategory from '@/services/postCategory';
 
 export default function AddCategoryModal({ isOpen, onClose }) {
-  const [categoryData, setCategoryData] = useState({
-    name: '',
-  })
+  const [categoryName, setCategoryName] = useState('');
 
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setCategoryData({
-      ...categoryData,
-      [name]: value,
-    });
-  }
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: handle form submission
+    const loadingToast = toast.loading('جاري الحفظ...');
+     await PostCategory(categoryName);
+     toast.dismiss(loadingToast);
+     onClose();
   }
   return (
     <Modal isOpen={isOpen} onRequestClose={onClose} className="fixed inset-0 flex justify-center items-center bg-gray-700 bg-opacity-70 z-[10] overflow-y-auto mb-10">
@@ -38,8 +35,8 @@ export default function AddCategoryModal({ isOpen, onClose }) {
               type="text"
               id="name"
               name="name"
-              value={categoryData.name}
-              onChange={handleInputChange}
+              value={categoryName}
+              onChange={(e) => setCategoryName(e.target.value)}
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-primary"
             />
           </div>

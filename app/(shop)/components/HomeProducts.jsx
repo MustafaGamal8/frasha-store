@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
 import ProductsSection from './ProductsSection';
+import CategoriesSection from './CategoriesSection';
 
 
 
@@ -59,16 +60,7 @@ export default async function HomeProducts() {
 
 
     
-        <ul className="w-full md:w-[80%] flex flex-wrap flex-row-reverse gap-6 mb-10 p-1">
-        <li className="category-item active">الكل</li>
-        {categories.map((category, index) => (
-          <Link href={`/products?category=${category.name}`} key={index} className="category-item">
-          <li key={index} className="category-item ">
-            {category.name}
-          </li>
-          </Link>
-        ))}
-      </ul>
+        <CategoriesSection currentCategory="الكل" categories={categories} />
 
       <ProductsSection products={products} />
       

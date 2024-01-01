@@ -2,12 +2,18 @@
 import knitting from "./(shop)/assets/knitting.png";
 import  Image  from 'next/image';
 import  Link  from 'next/link';
-export default function CustomNotFound() {
+export default function CustomNotFound({ msg }) {
   return (
     <div className="flex flex-col items-center justify-center h-screen text-center select-text">
       <h1 className=" text-6xl font-bold tracking-wider text-[#fe86bc] mb-16 uppercase">Frasha Store</h1>
+      {
+        msg ? <h1 className="text-4xl font-bold mb-4">{msg}</h1>
+         :
+         <>
       <h1 className="text-4xl font-bold mb-4">صفحة غير موجودة</h1>
       <p className="text-lg mb-8">عذرًا، الصفحة التي تبحث عنها غير موجودة</p>
+         </>
+      }
       <div
         className="w-48 h-48 animate-pulse"
         

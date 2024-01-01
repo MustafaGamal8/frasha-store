@@ -7,6 +7,7 @@ import Pagination from "./Pagination";
 import ProductsSection from "../components/ProductsSection";
 import { useSearchParams } from "next/navigation";
 import Link from 'next/link';
+import CategoriesSection from "../components/CategoriesSection";
 
 
 export default function Products() {
@@ -15,9 +16,8 @@ export default function Products() {
   const [currentPage, setCurrentPage] = useState(params.get('page') || 1);
   const [currentCategory, setCurrentCategory] = useState(params.get('category') || 'الكل')
   const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
   const [pageCount, setPageCount] = useState(0);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState(params.get('search') || '');
 
 
   useEffect(() => {
@@ -31,7 +31,6 @@ export default function Products() {
         toast.error(error.response?.data?.error || 'حدث خطأ ما');
       }
     }
-
     async function fetchProductsCount() {
       try {
         const response = await axios.get(`/api/productsCount?category=${currentCategory}`);
@@ -43,24 +42,12 @@ export default function Products() {
       }
     }
 
-    async function fetchCategories() {
-      try {
-        const response = await axios.get('/api/categories');
-        setCategories(response.data);
-      } catch (error) {
-        toast.error(error.message || 'حدث خطأ ما');
-      }
-    }
-
-    fetchProductsCount();
     fetchProducts();
-    fetchCategories();
-  }, [currentPage, currentCategory, params]);
+    fetchProductsCount();
+    
+  }, [currentCategory, currentPage]);
 
-  useEffect(() => {
-    setCurrentCategory(params.get('category') || 'الكل');
-    setCurrentPage(params.get('page') || 1);
-  }, [params]);
+
   const handlePageChange = (pageNum) => {
     setCurrentPage(pageNum);
   };
@@ -87,21 +74,7 @@ export default function Products() {
         <label htmlFor="search" className="text-primary text-xl"><GoSearch /></label>
       </form>
 
-      <ul className="w-full md:w-[80%] flex flex-wrap flex-row-reverse gap-6 my-10 p-1">
-        <h1 className="text-xl ">:الأقسام</h1>
-        {categories.length == 0 ?
-          <div className="w-[500px] h-10 bg-slate-300 animate-pulse ms-auto"></div> 
-          :<>
-          <Link href={`/products`} ><li className={`category-item ${currentCategory == 'الكل' ? 'active' : ''}`}>الكل</li></Link>
-          {categories.map((category, index) => (
-            <Link href={`/products?category=${category.name}`} key={index} className="category-item">
-              <li key={index} className={`category-item  ${currentCategory === category.name ? 'active' : ''}`}>
-                {category.name}
-              </li>
-            </Link>
-          ))}
-        </>}
-      </ul>
+      <CategoriesSection currentCategory={currentCategory} />
       <ProductsSection products={products} />
 
       <div className="flex flex-wrap items-center justify-center gap-3">

@@ -49,8 +49,8 @@ export  function ScrollToTopButton() {
     <button
       onClick={scrollToTop}
       className={`${
-        isVisible ? 'block' : 'hidden'
-      } fixed bottom-4 right-4 bg-white text-secondary px-4 py-4 rounded-full drop-shadow-md transition-all duration-300 z-[99]`}
+        isVisible ? 'fixed' : 'hidden'
+      }  bottom-4 right-4 bg-white text-secondary px-4 py-4 rounded-full drop-shadow-md transition-all duration-300 z-[99]`}
     >
       <IoIosArrowUp />      
     </button>

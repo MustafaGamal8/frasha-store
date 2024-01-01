@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function RootLayout({ children }) {
   return (
     <>
-      <ToastContainer autoClose={1000} />
+      <ToastContainer autoClose={1000} limit={2} />
     <main className='flex flex-col justify-between h-screen '>
       <Navbar />
       {children}

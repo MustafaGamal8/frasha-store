@@ -11,7 +11,9 @@ export default function Pagination  ({ currentPage, pageCount, onPageChange })  
 
   return (
     <>
-      <ul className="flex items-center gap-3 text-xl ">
+      {
+        (!pageCount || !currentPage ) ? <div className='w-[100px] bg-slate-300 animate-pulse h-10 rounded'></div>
+        :(<ul className="flex items-center gap-3 text-xl ">
         <li onClick={() => onPageChange(1)} className="text-primary hover:text-secondary cursor-pointer">
           <FiChevronsLeft />
         </li>
@@ -31,7 +33,8 @@ export default function Pagination  ({ currentPage, pageCount, onPageChange })  
         <li onClick={() => onPageChange(pageCount)} className="text-primary hover:text-secondary cursor-pointer">
           <FiChevronsRight />
         </li>
-      </ul>
+      </ul>)
+      }
 
 
     </>

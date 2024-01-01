@@ -1,7 +1,6 @@
 import { ToastContainer } from "react-toastify"
-import Sidebar from "./dashboard/components/Sidebar"
-
 import 'react-toastify/dist/ReactToastify.css';
+import ProtectedRoute from "./ProtectedRoute";
 
 export const metadata = {
   title: 'Dashboard - Frasha Store',
@@ -10,20 +9,11 @@ export const metadata = {
 
 
 export default function Layout({ children }) {
-
-
   return (
     <>
-      <main className="flex justify-between w-full h-screen overflow-y-scroll">
-        <section className="w-full h-full" >
-          {children}
-        </section>
-        <Sidebar />
-      </main>
-
-
-
-      <ToastContainer position="top-center"  autoClose={2000}/>
+      <ProtectedRoute children={children} />
+      <ToastContainer position="top-center" autoClose={2000} />
     </>
   )
 }
+

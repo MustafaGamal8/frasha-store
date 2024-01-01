@@ -3,23 +3,25 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import ProductsSection from '../components/ProductsSection';
 import { FaHeart } from 'react-icons/fa';
+import GetList from '../logic/getList';
 
 
 export default function page() {
-  const [cart, setCart] = useState([])
+  const [favorites, setFavorites] = useState([])
 
   useEffect(() => {
     const productsIds = JSON.parse(localStorage.getItem('favorites'))
 
-    async function fetchCart() {
-      const response = await axios.post('/api/products/list', {
-        productsIds: productsIds
-      })
-      setCart(response.data)
+    async function fetchFavorites() {
+      const products = await GetList(productsIds)
+      setFavorites(products)    
     }
 
-    fetchCart()
+    fetchFavorites()
   }, [])
+
+
+  
 
 
 
@@ -29,9 +31,12 @@ export default function page() {
       <FaHeart />
         <h1 > المفضلة </h1>
       </div>
-      <ProductsSection products={cart} />
+      <ProductsSection products={favorites} />
 
 
     </div>
   )
 }
+
+
+

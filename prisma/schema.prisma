@@ -14,8 +14,8 @@ model Product{
   name      String
   price     Int
   description String
-  photos      Photo[]
-  link      String
+  photos      Photo[] 
+  link      String?
 
   category  Category @relation(fields: [categoryId], references: [id])
   categoryId String @db.ObjectId
@@ -29,7 +29,7 @@ model Photo {
   photo      Bytes
   url        String?
   type       String
-  product    Product  @relation(fields: [productId], references: [id]) 
+  product    Product  @relation(fields: [productId], references: [id],onDelete: Cascade) 
   productId  String   @db.ObjectId
 }
 

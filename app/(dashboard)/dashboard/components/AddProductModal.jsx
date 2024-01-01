@@ -1,10 +1,10 @@
 "use client";
 import { useEffect, useState } from 'react';
 import Modal from 'react-modal';
-import getCategorys from '@/services/getCategorys';
 import { IoMdClose } from 'react-icons/io';
 import PostProduct from '@/services/postProduct';
 import { toast } from 'react-toastify';
+import  axios  from 'axios';
 
 Modal.setAppElement('body');
 
@@ -24,8 +24,8 @@ const AddProductModal = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     (async () => {
-      const categories = await getCategorys();
-      setSelectedCategory(categories);
+      const res = await axios.get('/api/categories')
+      setSelectedCategory(res.data);
     })();
   }, [])
 
@@ -89,7 +89,7 @@ const AddProductModal = ({ isOpen, onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { name, price, description, link, categoryId, photos } = productData;
-    if (!name || !price || !description || !link || !categoryId || photos.length === 0) {
+    if (!name || !price || !description  || !categoryId || photos.length === 0) {
       return toast.error('يجب تعبئة جميع الحقول');
 
     }

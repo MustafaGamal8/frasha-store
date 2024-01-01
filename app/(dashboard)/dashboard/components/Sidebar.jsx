@@ -35,9 +35,9 @@ const Sidebar = () => {
 
   const logoutHandler = () => {
     deleteCookie("token");
-    router.push("/");
+    router.replace("/");
     setTimeout(() => {
-      window.location.reload();
+      router.refresh();
     }, 1000);
   }
 

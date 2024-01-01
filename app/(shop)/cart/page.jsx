@@ -1,9 +1,9 @@
 "use client"
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import ProductsSection from '../components/ProductsSection';
 import { BsCart3 } from 'react-icons/bs';
 import OrderModal from './OrderModal';
+import GetList from '../logic/getList';
 
 
 export default function page() {
@@ -15,10 +15,8 @@ export default function page() {
     const productsIds = JSON.parse(localStorage.getItem('cart'))
 
     async function fetchCart() {
-      const response = await axios.post('/api/products/list', {
-        productsIds: productsIds
-      })
-      setCart(response.data)
+      const products = await GetList(productsIds)
+      setCart(products)
     }
 
     fetchCart()
@@ -44,7 +42,7 @@ export default function page() {
 
 
       {
-        cart.length > 0 && <div onClick={openModal}  className='text-white bg-green-300 drop-shadow-md p-2 rounded m-auto w-[400px] cursor-pointer text-center font-bold my-10'>اكمال عملية الشراء</div>
+        cart &&  cart.length > 0 && <div onClick={openModal}  className='text-white bg-green-300 drop-shadow-md p-2 rounded m-auto w-[400px] cursor-pointer text-center font-bold my-10'>اكمال عملية الشراء</div>
       }
       <OrderModal isOpen={isModalOpen} onClose={closeModal}  cart={cart}/>
     </div>

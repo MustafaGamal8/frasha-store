@@ -8,11 +8,10 @@ export default function OrderModal({ isOpen, onClose, cart }) {
   const [sure, setSure] = useState(false);
 
   // Calculate total price based on the products in the cart
-  const totalPrice = cart.reduce((acc, product) => acc + product.price, 0);
+  const totalPrice = cart && cart.reduce((acc, product) => acc + product.price, 0);
 
   const handelOrder = () => {
     console.log(sure);
-    // Perform the order logic here
   };
 
   return (
@@ -26,7 +25,7 @@ export default function OrderModal({ isOpen, onClose, cart }) {
 
         {/* Product details */}
         <div className="flex flex-col gap-2">
-          {cart.map((product, index) => (
+          {cart && cart.map((product, index) => (
             <div key={index} className="flex justify-between items-center">
               <span>{product.price}</span>
               <span className='font-bold'>{product.name}</span>

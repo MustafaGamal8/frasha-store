@@ -1,5 +1,4 @@
 "use client";
-import Image from 'next/image';
 import { FiShoppingCart, FiHeart, FiLink } from 'react-icons/fi';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -49,9 +48,9 @@ const Product = ({ product }) => {
 
   return (
     <div className="w-full bg-primary drop-shadow-lg ">
-      <section className="group relative p-6 bg-[#f6f6f6] w-full h-[350px] cursor-pointer">
-        <Link href={`/product/${id}`}>
-          <Image className="w-full h-full object-cover" width={100} height={800} src={photos && photos[0] ? photos[0].url : '/logo.png'} alt="img" />
+      <section className="group relative p-6 bg-[#f6f6f6] w-full h-[350px] cursor-pointer flex items-center justify-center">
+        <Link href={`/product/${id}`} >
+          <img className="w-full h-full object-contain"  src={photos && photos[0] ? photos[0].url : '/logo.png'} alt="img" />
         </Link>
 
         <div className="group group-hover:h-[80px] h-[55px] md:h-0 w-full group-hover:flex absolute bottom-0 left-0 bg-gray-400 bg-opacity-50 z-[1] transition-all duration-300">
