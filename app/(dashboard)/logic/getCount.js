@@ -23,3 +23,15 @@ export const  GetCategoriesCount = async () => {
   }
 }
 
+
+
+export const  GetOrdersCount = async () => {
+  try {
+    const prisma = new PrismaClient()
+    const orders = await prisma.order.count()
+    return orders
+    
+  } catch (error) {
+    console.log(error)    
+  }
+}

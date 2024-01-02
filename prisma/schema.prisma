@@ -48,3 +48,16 @@ model Admin{
   username     String
   password  String
 }
+
+model Order{
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  phone     String
+  totalPrice Int
+  productsIds  String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+
+}
+  

@@ -20,32 +20,27 @@ export default function Products() {
   const [search, setSearch] = useState(params.get('search') || '');
 
 
+
   useEffect(() => {
-    async function fetchProducts() {
+    async function fetchData() {
       try {
-        setProducts([]);
-        const response = await axios.get(`/api/products/${currentPage}?category=${currentCategory}`,);
-        setProducts(response.data);
-        
+        const productsPromise = axios.get(`/api/products/${currentPage}?category=${currentCategory}`);
+        const countPromise = axios.get(`/api/productsCount?category=${currentCategory}`);
+  
+        const [productsResponse, countResponse] = await Promise.all([productsPromise, countPromise]);
+  
+        setProducts(productsResponse.data);
+  
+        const count = parseInt(countResponse.data / 10) + 1;
+        setPageCount(count);
       } catch (error) {
         toast.error(error.response?.data?.error || 'حدث خطأ ما');
       }
     }
-    async function fetchProductsCount() {
-      try {
-        const response = await axios.get(`/api/productsCount?category=${currentCategory}`);
-        const count = parseInt(response.data / 10) + 1;
-
-        setPageCount(count)
-      } catch (error) {
-        toast.error(error.message || 'حدث خطأ ما');
-      }
-    }
-
-    fetchProducts();
-    fetchProductsCount();
-    
+  
+    fetchData();
   }, [currentCategory, currentPage]);
+  
 
 
   const handlePageChange = (pageNum) => {
@@ -69,8 +64,8 @@ export default function Products() {
       <h1 className="text-center text-3xl font-bold  text-secondary mt-10"> المنتجات - {currentCategory} </h1>
 
       <form onSubmit={handleSearch} className="lg:w-[50%] md:w-[70%] w-[80%] bg-white m-auto p-2 flex items-center rounded drop-shadow mt-16">
-        <button className="text-white rounded text-xl bg-secondary p-1">بحث</button>
-        <input type="text" id="search" name="search" value={search} autoComplete="off" onChange={(e) => setSearch(e.target.value)} placeholder="البحث" className="w-full p-1 outline-none text-right" />
+        <button className="text-white rounded text-xl bg-secondary p-1 px-3 ">بحث</button>
+        <input type="text" id="search" name="search" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="البحث" className="w-full p-1 outline-none text-right" />
         <label htmlFor="search" className="text-primary text-xl"><GoSearch /></label>
       </form>
 

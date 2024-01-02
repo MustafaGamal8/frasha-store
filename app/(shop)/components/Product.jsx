@@ -23,13 +23,14 @@ const Product = ({ product }) => {
     favorites.push(id);
     localStorage.setItem('favorites', JSON.stringify(favorites));
     setFavorites(favorites);
+    toast.success("تم اضافة المنتج الي المفضلات")
     return
     }
     favorites.splice(favorites.indexOf(id), 1);
     localStorage.setItem('favorites', JSON.stringify(favorites));
     setFavorites(favorites);
 
-  }
+  } 
 
   const handelCart = (id) => {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -47,11 +48,12 @@ const Product = ({ product }) => {
 
 
   return (
-    <div className="w-full bg-primary drop-shadow-lg ">
-      <section className="group relative p-6 bg-[#f6f6f6] w-full h-[350px] cursor-pointer flex items-center justify-center">
-        <Link href={`/product/${id}`} >
-          <img className="w-full h-full object-contain"  src={photos && photos[0] ? photos[0].url : '/logo.png'} alt="img" />
+    <div className="w-full bg-primary drop-shadow-lg rounded-lg ">
+      <section className="group relative  bg-[#f6f6f6] w-full h-[350px] cursor-pointer flex items-center justify-center">
+        <Link id='product_image' href={`/product/${id}`} className='w-full h-full ' >
+          <img className="w-full h-full "  src={photos && photos[0] ? photos[0].url : '/logo.png'} alt="صورة المنتج" />
         </Link>
+
 
         <div className="group group-hover:h-[80px] h-[55px] md:h-0 w-full group-hover:flex absolute bottom-0 left-0 bg-gray-400 bg-opacity-50 z-[1] transition-all duration-300">
           <div className="md:hidden flex group-hover:flex items-center justify-around h-full w-full p-2">
@@ -75,7 +77,7 @@ const Product = ({ product }) => {
       </section>
 
       <section className="text-center text-2xl mt-2 text-white">
-        <h1>{name}</h1>
+        <h1 >{name}</h1>
         <p>{price}$</p>
       </section>
     </div>

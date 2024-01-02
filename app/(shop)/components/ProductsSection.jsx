@@ -16,33 +16,7 @@ export default function ProductsSection({ products }) {
   return (
     <section className="w-full flex flex-wrap items-center justify-center gap-9">
       
-
-      {
-        loading ? 
-        (
-          Array.from({ length: 4 }).map((_, index) => (
-          <div key={index} className='md:w-[330px] w-[75%] m-5'><LoadingProduct/></div>
-        ))
-        )
-        :
-
-        (products &&  products.map((product, index) => (
-          <div key={product.id} className="md:w-[330px] w-[75%] m-5">
-            <Product product={product} />
-          </div>
-        ))
-        ) 
-
-
-      }
-
-
-
-
-
-
-
-        {/* {
+        {
           products.length === 0 ?
            (
             loading ? Array.from({ length: 4 }).map((_, index) => (
@@ -54,12 +28,12 @@ export default function ProductsSection({ products }) {
 
           ) :
             (products.map((product, index) => (
-              <div key={product.id} className="md:w-[330px] w-[75%] m-5">
+              <div key={product.id} className="md:w-[330px] w-[70%] m-5">
                 <Product product={product} />
               </div>
             ))
             )
-        } */}
+        }
       </section>
   )
 }

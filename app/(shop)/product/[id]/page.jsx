@@ -49,21 +49,24 @@ const ProductDetail = () => {
     cart.splice(cart.indexOf(id), 1);
     localStorage.setItem('cart', JSON.stringify(cart));
     toast.info("تم ازالة المنتج من سلة المشتريات")
-  }
+  }                           
 
 
 
   return (
     <>
 
-      {
-        !product ? <LoadingProductPage />
+      {   
+        !product ? <LoadingProductPage /> 
           :
           (
             <div className="w-11/12 mx-auto flex lg:flex-row flex-col items-center">
               {
                 product.photos && product.photos.length == 1 ? (
+                  <div className='lg:w-2/5 w-full flex items-center justify-center'>
+                    
                   <img src={product.photos[0].url} className='w-full  md:w-[450px] object-cover my-10' alt="" />
+                  </div>
 
                 )
                   :
@@ -72,7 +75,7 @@ const ProductDetail = () => {
                   </div>
               }
               <div className="lg:w-1/2 w-full mx-auto my-10 px-4 select-text">
-                <h1 className="text-4xl font-semibold mb-2">{product.name}</h1>
+                <h1 className="text-4xl font-semibold mb-2">{product.name}</h1>       
                 <p className="text-3xl font-semibold text-primary mb-4">{product.price}$</p>
                 <p className="text-secondary mb-4 text-xl ">{product.description}</p>
 
@@ -81,7 +84,7 @@ const ProductDetail = () => {
                 <section className="flex flex-col-reverse items-center justify-center gap-5">
 
 
-                  {
+                  { 
                     product.link &&
 
                     <Link href={product?.link} target='_blank' className="flex items-center justify-center w-[300px] bg-blue-500 hover:bg-blue-600 text-white md:px-4 md:py-2  p-2 rounded-md mr-4 transition-all duration-300">
