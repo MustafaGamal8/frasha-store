@@ -16,6 +16,7 @@ export default function AddCategoryModal({ isOpen, onClose }) {
     const loadingToast = toast.loading('جاري الحفظ...');
      await PostCategory(categoryName);
      toast.dismiss(loadingToast);
+     setCategoryName('');
      onClose();
   }
   return (

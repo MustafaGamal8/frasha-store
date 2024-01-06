@@ -143,7 +143,7 @@ const Dashboard = () => {
 
 
 
-            <AddProductModal isOpen={isModalsOpen.isProductModalOpen} onClose={() => closeModal("product")} />
+            <AddProductModal isOpen={isModalsOpen.isProductModalOpen} onClose={() => closeModal("product")}  method={"post"} />
             <AddCategoryModal isOpen={isModalsOpen.isCategoryModalOpen} onClose={() => closeModal("category")} />
           </>
 

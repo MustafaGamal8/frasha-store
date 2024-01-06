@@ -14,23 +14,24 @@ export const config = {
 
 export default async function handler(req, res) {
 
-  if (req.method == "GET") {
-    return getProduct(req, res);
-  }
-  else if (req.method == "POST") {
+   await checkAuth(req, res);
+
+   if (req.method == "POST") {
     return uploadProduct(req, res);    
-  }else{
+  }
+  else if (req.method == "PUT") {
+    return updateProduct(req, res);
+  }
+  else{
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
 }
 
 
 
+const checkAuth = async (req, res) => {
 
-const uploadProduct = async (req, res) => {
-
-  try {
-    let token = req.headers["authorization"];
+  let token = req.headers["authorization"];
     token = token ? token.replace("Bearer ", "") : "";
     const decodedToken = Jwt.decode(token);
 
@@ -47,6 +48,42 @@ const uploadProduct = async (req, res) => {
     if (!admin) {
       return res.status(401).json({ error: 'الرجاء تسجيل الدخول' });      
     }
+}
+
+const uploadPhotos = async (ProductId, photos) => {
+  for (const p of photos) {
+    const compressedImageBuffer = await sharp(Buffer.from(p.data, 'base64'))
+    .resize({ width: 800 })
+      .toBuffer()
+
+    const photo = await prisma.photo.create({
+      data: {
+        photo: compressedImageBuffer,
+        type: p.type,
+        product: {
+          connect: {
+            id: ProductId,
+          },
+        }
+      },
+    });
+
+    await prisma.photo.update({
+      where: {
+        id: photo.id,
+      },
+      data: {
+        url: "/api/images/" + photo.id,
+      },
+
+    })
+  }
+}
+
+const uploadProduct = async (req, res) => {
+
+  try {
+    
 
     const contentLength = req.headers['content-length'] ? parseInt(req.headers['content-length'], 10) : 0;
     const sizeInMB = contentLength / (1024 * 1024);
@@ -103,33 +140,11 @@ const uploadProduct = async (req, res) => {
       },
     });
 
-    for (const p of photos) {
-      const compressedImageBuffer = await sharp(Buffer.from(p.data, 'base64'))
-      .resize({ width: 800 })
-        .toBuffer()
-
-      const photo = await prisma.photo.create({
-        data: {
-          photo: compressedImageBuffer,
-          type: p.type,
-          product: {
-            connect: {
-              id: createdProduct.id,
-            },
-          }
-        },
-      });
-
-      await prisma.photo.update({
-        where: {
-          id: photo.id,
-        },
-        data: {
-          url: "/api/images/" + photo.id,
-        },
-
-      })
+    if (createdProduct) {
+      await uploadPhotos( createdProduct.id,photos);      
     }
+
+    
 
     return res.status(200).json({ message: 'تم اضافة المنتج بنجاح', productId: createdProduct.id });
   } catch (error) {
@@ -139,30 +154,64 @@ const uploadProduct = async (req, res) => {
 
 }
 
+const updateProduct = async (req, res) => {
 
-const getProduct = async (req, res) => {
+  try {
+    
 
-  const { id } = req.query;
+  const { name, price , description, link, categoryId, photos , deletedPhotos ,productId} = req.body;
 
-  if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+
+  if (!productId.match(/^[0-9a-fA-F]{24}$/)) {
     return res.status(400).json({ error: 'المنتج غير موجود' });
-
   }
 
   const product = await prisma.product.findUnique({
     where: {
-      id
+      id:productId,
     },
-    include: {
-      category: true,
-      photos: true
-    }
   })
 
   if (!product) {
-    return res.status(404).json({ error: 'المنتج غير موجود' });
+    return res.status(400).json({ error: 'المنتج غير موجود' });
   }
 
-  return res.status(200).json(product);
+  const updatedProduct = await prisma.product.update({
+    where: {
+      id:productId,
+    },
+    data: {
+      name,
+      price: parseInt(price),
+      description,
+      link,
+      category: {
+        connect: {
+          id: categoryId,
+        },
+      }
+    },
+  });
 
+  if (deletedPhotos && deletedPhotos.length > 0) {
+    await prisma.photo.deleteMany({
+      where: {
+        id: {
+          in: deletedPhotos
+        }
+      }
+    })
+    
+  }
+
+  if (photos && photos.length > 0) {
+    await uploadPhotos( updatedProduct.id,photos);
+  }
+
+  res.status(200).json({ message: 'تم تعديل المنتج بنجاح' });
+    
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'فشل في تعديل المنتج' });
+  }
 }

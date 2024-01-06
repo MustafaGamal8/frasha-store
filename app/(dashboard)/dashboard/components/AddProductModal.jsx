@@ -2,21 +2,22 @@
 import { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { IoMdClose } from 'react-icons/io';
-import PostProduct from '@/services/postProduct';
 import { toast } from 'react-toastify';
 import  axios  from 'axios';
-
+import { getCookie } from 'cookies-next';
 Modal.setAppElement('body');
 
-const AddProductModal = ({ isOpen, onClose }) => {
+const AddProductModal = ({ isOpen, onClose ,product,method }) => {
+  console.log(product)
   const [productData, setProductData] = useState({
-    name: '',
-    price: 0,
-    description: '',
-    link: '',
-    categoryId: '',
+    name: product?.name || '',
+    price: product?.price || 0,
+    description: product?.description || '',
+    link: product?.link || '',
+    categoryId:  product?.categoryId || '',
     photos: [],
-    photosUrls: []
+    photosUrls: product?.photos || [],
+    deletedPhotos:  []
   });
 
   const [selectedCategory, setSelectedCategory] = useState([]);
@@ -28,6 +29,8 @@ const AddProductModal = ({ isOpen, onClose }) => {
       setSelectedCategory(res.data);
     })();
   }, [])
+
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -54,7 +57,7 @@ const AddProductModal = ({ isOpen, onClose }) => {
         const blob = new Blob([fileBuffer], { type: file.type });
         const blobURL = URL.createObjectURL(blob);
 
-        // Update arrays with new file and blob URL
+        
         newPhotos.push({ data: base64, type: file.type });
         newPhotosUrls.push(blobURL);
 
@@ -74,6 +77,14 @@ const AddProductModal = ({ isOpen, onClose }) => {
 
 
 
+  const handleRemovePhoto = (index,photoId) => {
+    if (method == "put") {
+      productData.deletedPhotos = [...productData.deletedPhotos,photoId]
+    }
+    removePhoto(index);
+    
+  }
+
   const removePhoto = (index) => {
     const updatedPhotos = [...productData.photos];
     const updatedPhotosUrls = [...productData.photosUrls];
@@ -88,17 +99,31 @@ const AddProductModal = ({ isOpen, onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { name, price, description, link, categoryId, photos } = productData;
-    if (!name || !price || !description  || !categoryId || photos.length === 0) {
+    let { name, price, description, link, categoryId, photos,deletedPhotos } = productData;
+    if (!name || !price || !description  || !categoryId ) {
       return toast.error('يجب تعبئة جميع الحقول');
-
     }
 
     setLoading(true);
-    const loadingToast = toast.loading('جاري اضافة المنتج');
-    await PostProduct({ name, price, description, link, categoryId, photos });
+    const loadingToast = toast.loading(method == "post" ? 'جاري اضافة المنتج' : 'جاري تعديل المنتج');
+    if (method === 'put') {
+      await UpdateProduct({ name, price, description, link, categoryId, photos, deletedPhotos,productId: product.id });      
+    }else{
+      await PostProduct({ name, price, description, link, categoryId, photos });
+    }
+
     toast.dismiss(loadingToast);
     setLoading(false);
+    setProductData({
+      name: '',
+      price: 0,
+      description: '',
+      link: '',
+      categoryId: '',
+      photos: [],
+      photosUrls: []
+    })
+    onClose();
 
   };
 
@@ -108,7 +133,7 @@ const AddProductModal = ({ isOpen, onClose }) => {
         <button onClick={onClose} className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 transition duration-300">
           <IoMdClose size={24} />
         </button>
-        <h2 className="text-2xl font-bold mb-4 text-right">إضافة منتج جديد</h2>
+        <h2 className="text-2xl font-bold mb-4 text-right">{method == "post" ? "إضافة منتج جديد" :"تعديل المنتج"}</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label htmlFor="name" className="block mb-2 text-sm font-semibold text-gray-700 text-right">
@@ -208,11 +233,11 @@ const AddProductModal = ({ isOpen, onClose }) => {
             <div className="mt-2 grid grid-cols-2 gap-2">
               {productData.photosUrls.map((photo, index) => (
                 <div key={index} className="relative">
-                  <span className="absolute top-0 right-0 m-1 cursor-pointer text-red-500" onClick={() => removePhoto(index)}>
+                  <span className="absolute top-0 right-0 m-1 cursor-pointer text-red-500" onClick={() => handleRemovePhoto(index, photo.id)}>
                     X
                   </span>
                   <img
-                    src={photo}
+                    src={photo.url ? photo.url : photo}
                     alt={`Uploaded ${index}`}
                     className="w-full h-20 object-cover rounded-md"
                   />
@@ -225,7 +250,7 @@ const AddProductModal = ({ isOpen, onClose }) => {
             disabled={loading}
             className={`w-full bg-primary text-white py-2 rounded-md transition duration-300 hover:bg-secondary ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
-            إضافة المنتج
+            {method === 'post' ? 'اضافة المنتج' : 'تعديل المنتج'}
           </button>
         </form>
       </div>
@@ -234,3 +259,50 @@ const AddProductModal = ({ isOpen, onClose }) => {
 };
 
 export default AddProductModal;
+
+
+async function PostProduct(product) {
+  try {
+
+    const token =  getCookie('token');
+    const response = await axios.post("/api/product", product,{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const { message, error } = response.data;
+
+    if (error) {
+      toast.error(error);
+    } else {
+      toast.success(message || 'تم اضافة المنتج بنجاح');
+    }
+  } catch (error) {
+    toast.error(error.response.data.error || 'فشل في اضافة المنتج');
+  }
+};
+
+
+
+async function UpdateProduct(product) {
+  try {
+
+    const token =  getCookie('token');
+    const response = await axios.put("/api/product", product,{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const { message, error } = response.data;
+
+    if (error) {
+      toast.error(error);
+    }else {
+      toast.success(message || 'تم تعديل المنتج بنجاح');
+    }
+    
+  } catch (error) {
+    console.log(error)
+    toast.error(error.response.data.error || 'فشل في تعديل المنتج');    
+  }  
+}

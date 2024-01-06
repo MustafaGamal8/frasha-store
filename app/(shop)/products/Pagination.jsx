@@ -12,7 +12,6 @@ export default function Pagination  ({ currentPage, pageCount, onPageChange })  
   }
 
 
-
   setTimeout(() => {
     setLoading(false)
   }, 2000);
@@ -23,7 +22,7 @@ export default function Pagination  ({ currentPage, pageCount, onPageChange })  
         (!pageCount || !currentPage ) ?
         
           loading ?
-          <div className='w-[100px] bg-slate-300 animate-pulse h-10 rounded'></div>
+          <div className='w-[300px] bg-slate-300 animate-pulse h-10 rounded'></div>
           :
           null
          

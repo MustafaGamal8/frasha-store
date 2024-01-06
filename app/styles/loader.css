@@ -3,9 +3,9 @@
   height: 4rem;
   border-radius: 50%;
   box-sizing: border-box;
-  border-top: 4px solid #cb6698;
-  border-left: 4px solid #cb6698;
-  border-right: 4px solid #cb6698;
+  border-top: 2px solid #cb6698;
+  border-left: 2px solid #cb6698;
+  border-right: 2px solid #cb6698;
   animation: loader .7s infinite linear;
 }
 

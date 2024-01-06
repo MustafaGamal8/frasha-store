@@ -12,7 +12,7 @@ export default function Layout({ children }) {
   return (
     <>
       <ProtectedRoute children={children} />
-      <ToastContainer position="top-center" autoClose={2000} />
+      <ToastContainer position="top-left" autoClose={2000} limit={2} />
     </>
   )
 }

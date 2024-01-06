@@ -18,28 +18,30 @@ export default function Products() {
   const [products, setProducts] = useState([]);
   const [pageCount, setPageCount] = useState(0);
   const [search, setSearch] = useState(params.get('search') || '');
+  const [loading, setLoading] = useState(false);
 
 
 
   useEffect(() => {
+    setLoading(true);
+    setCurrentCategory(params.get('category') || 'الكل');
     async function fetchData() {
       try {
-        const productsPromise = axios.get(`/api/products/${currentPage}?category=${currentCategory}`);
-        const countPromise = axios.get(`/api/productsCount?category=${currentCategory}`);
+        const response = await axios.get(`/api/products?page=${currentPage}&category=${params.get('category') || 'الكل'}`);
   
-        const [productsResponse, countResponse] = await Promise.all([productsPromise, countPromise]);
+        setProducts(response.data.products);
   
-        setProducts(productsResponse.data);
-  
-        const count = parseInt(countResponse.data / 10) + 1;
+        const count = parseInt(response.data.productsCount / 10) + 1;
         setPageCount(count);
+        
+    setLoading(false);
       } catch (error) {
         toast.error(error.response?.data?.error || 'حدث خطأ ما');
       }
     }
   
     fetchData();
-  }, [currentCategory, currentPage]);
+  }, [currentCategory, currentPage,params]);
   
 
 
@@ -69,8 +71,8 @@ export default function Products() {
         <label htmlFor="search" className="text-primary text-xl"><GoSearch /></label>
       </form>
 
-      <CategoriesSection currentCategory={currentCategory} />
-      <ProductsSection products={products} />
+      <CategoriesSection  currentCategory={currentCategory} />
+      <ProductsSection isloading={loading} products={products} />
 
       <div className="flex flex-wrap items-center justify-center gap-3">
         <Pagination currentPage={currentPage} pageCount={pageCount} onPageChange={handlePageChange} />
