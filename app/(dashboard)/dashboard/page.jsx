@@ -2,11 +2,12 @@
 import { useEffect, useState } from "react";
 import { IoAdd, IoCartOutline, IoFolderOpenOutline, IoListOutline } from "react-icons/io5";
 import Link from 'next/link';
-import AddProductModal from "./components/AddProductModal";
-import AddCategoryModal from "./components/AddCategoryModal";
+import AddCategoryModal from "./components/CategoryModal";
 import { GetCategoriesCount, GetOrdersCount, GetProductsCount } from "../logic/getCount";
 import dashboardSvg from '../assets/dashboard.svg'
 import  Image  from 'next/image';
+import ProductModal from "./components/ProductModal";
+import CategoryModal from "./components/CategoryModal";
 
 
 const Dashboard = () => {
@@ -112,7 +113,7 @@ const Dashboard = () => {
 
 
 
-            <section className="flex  items-center justify-around flex-row-reverse w-[80%] mx-auto rounded drop-shadow-lg">
+            <section className="flex flex-col items-center justify-around md:flex-row-reverse w-[80%] mx-auto rounded drop-shadow-lg my-10">
 
               <div className="w-[400px] h-[400px]">
                 <Image className="w-full h-full" src={dashboardSvg} alt="" />
@@ -143,8 +144,8 @@ const Dashboard = () => {
 
 
 
-            <AddProductModal isOpen={isModalsOpen.isProductModalOpen} onClose={() => closeModal("product")}  method={"post"} />
-            <AddCategoryModal isOpen={isModalsOpen.isCategoryModalOpen} onClose={() => closeModal("category")} />
+            {isModalsOpen.isProductModalOpen && <ProductModal isOpen={isModalsOpen.isProductModalOpen} onClose={() => closeModal("product")}  method={"post"} />}
+            {isModalsOpen.isCategoryModalOpen && <CategoryModal isOpen={isModalsOpen.isCategoryModalOpen} onClose={() => closeModal("category")} method={"post"} />}
           </>
 
       }

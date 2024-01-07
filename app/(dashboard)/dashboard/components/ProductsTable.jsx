@@ -5,7 +5,9 @@ import { CiEdit } from "react-icons/ci";
 import Pagination from "@/app/(shop)/products/Pagination";
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import AddProductModal from "./AddProductModal";
+import ProductModal from "./ProductModal";
+import { getCookie } from "cookies-next";
+import  Link  from 'next/link';
 
 
 export default function ProductsTable() {
@@ -20,8 +22,8 @@ export default function ProductsTable() {
 
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
 
-  
 
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,7 +33,6 @@ export default function ProductsTable() {
           axios.get(`/api/products?page=${currentPage}&category=${currentCategory}`),
           axios.get('/api/categories')
         ]);
-
         setProducts(productsResponse.data.products);
         setProductsCount(productsResponse.data.productsCount);
         setTotalPages(parseInt(productsResponse.data.productsCount / 10) + 1);
@@ -40,8 +41,9 @@ export default function ProductsTable() {
       } catch (error) {
         console.log(error)
         toast.error(error.response?.data?.error || 'حدث خطأ ما');
+      }finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     fetchData();
@@ -74,23 +76,34 @@ export default function ProductsTable() {
     }
   };
 
+  const handelChangeCategory = (event) => {
+    setCurrentCategory(event.target.value);
+    setCurrentPage(1);
+  } 
   const handleDelete = async () => {
     if (selectedProducts.length === 0) {
       toast.error('يجب تحديد عنصر واحد علي الاقل');
       return
     }
+    const loadingToast = toast.loading('جاري الحذف...');
     try {
-      toast.info('جاري الحذف...');
-      console.log(selectedProducts)
+      
       await axios.delete('/api/products', {
         data: {
-          productsIds: selectedProducts 
+          productsIds: selectedProducts
+        },
+        headers: {
+          Authorization: `Bearer ${getCookie('token')}`
         }
       });
       toast.success('تم الحذف بنجاح');
       setSelectedProducts([]);
+      window.location.reload();
     } catch (error) {
+      console.log(error)
       toast.error(error.response?.data?.error || 'حدث خطأ ما');
+    }finally {
+      toast.dismiss(loadingToast);
     }
   }
 
@@ -100,101 +113,110 @@ export default function ProductsTable() {
       return
     }
     setIsProductModalOpen(true);
-      
-    }
+  }
 
   return (
-    <div>
-      <h1 className="text-right text-2xl font-bold my-2">
+    <div className="p-6 bg-white rounded shadow-lg">
+      <h1 className="text-3xl font-bold mb-4 text-center">
         العدد الكلي للمنتجات: <span className="text-primary">{productsCount}</span>
       </h1>
 
-      <div  className="my-5">
-          <select
-            id="category"
-            onChange={(e) => setCurrentCategory(e.target.value)}
-            className="text-primary p-2 mx-4 text-right"
-          >
-            <option value="الكل">الكل</option>
-            {categories.map((category) => (
-              <option key={category.id} value={category.name}>
-                {category.name}
-              </option>
-            ))}
-          </select>
-          <label htmlFor="category">:اختار القسم</label>
-        </div>
+      <div className="my-5">
+        <select
+          id="category"
+          onChange={handelChangeCategory}
+          className="text-primary drop-shadow p-2 mx-4 text-right rounded"
+        >
+          <option value="الكل">الكل</option>
+          {categories.map((category) => (
+            <option key={category.id} value={category.name}>
+              {category.name}
+            </option>
+          ))}
+        </select>
+        <label htmlFor="category">:اختار القسم</label>
+      </div>
 
-       
-      {
-        loading ?
 
-         (<div className="w-full h-[550px] bg-slate-200 animate-pulse flex flex-col items-center pt-10 flex-wrap gap-5">
-        {Array.from({ length: 7 }).map((_, index) => (          
-        <div key={index}  className="w-[80%] h-[40px] bg-slate-300 animate-pulse"></div>
-        ))}
-        </div> )
-        : 
-        products.length == 0 ? 
-        <h1 className="text-center text-4xl font-bold  text-secondary my-10">لا يوجد منتجات</h1>
-        :
-        (<section className="bg-white p-2 overflow-x-auto w-full">
+      <>
+        {
+          loading ?
 
-        
+            (
+              <div className="w-full h-[550px] bg-slate-200 animate-pulse flex flex-col items-center justify-evenly pt-10 flex-wrap gap-5">
+                {Array.from({ length: 5 }).map((_, index) => (
+                  <div key={index} className="w-[80%] h-[40px] bg-slate-300 animate-pulse"></div>
+                ))}
+              </div>
+            )
+            :
+            products.length == 0 ?
+              <h1 className="text-center text-2xl font-bold  text-secondary my-10">لا يوجد منتجات في هذا القسم</h1>
+              :
+              (
+                <section className="bg-white p-2 overflow-x-auto w-full rounded-t-lg">
 
-        <table className="w-full border-collapse overflow-x-auto whitespace-nowrap overflow-hidden">
-          <thead>
-            <tr>
-              <th className="border-r border-gray-300 p-1 px-2 bg-gray-200">عدد الصور</th>
-              <th className="border-r border-gray-300 p-1 px-2 bg-gray-200">القسم</th>
-              <th className="border-r border-gray-300 p-1 px-2 bg-gray-200">السعر</th>
-              <th className="border-r border-gray-300 p-1 px-2 bg-gray-200">الاسم</th>
-              <th className="w-[120px] p-1 bg-gray-200 rounded-tr-lg text-center">
-                <label htmlFor="select-all">تحديد الكل</label>
-                <input
-                  id="select-all"
-                  type="checkbox"
-                  onChange={handleSelectAll}
-                  checked={selectedProducts.length === products.length}
-                />
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.map((product) => (
-              <tr
-                className={`hover:bg-primary hover:text-white ${selectedProducts.includes(product.id) ? 'bg-secondary text-white' : 'bg-white'
-                  }`}
-                key={product.id}
-              >
-                <td className="border p-2">{product.photos.length}</td>
-                <td className="border p-2">{product.category.name}</td>
-                <td className="border p-2">{product.price}</td>
-                <td className="border p-2">{product.name}</td>
-                <td className="border p-2">
-                  <input
-                    type="checkbox"
-                    value={product.id}
-                    onChange={handleSelect}
-                    checked={selectedProducts.includes(product.id)}
-                  />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                  <table className="w-full border-collapse overflow-x-auto whitespace-nowrap overflow-hidden">
+                    <thead>
+                      <tr>
+                        <th className="border-r border-gray-300 p-1 px-2 bg-gray-200 rounded-tl-lg ">زيارة</th>
+                        <th className="border-r border-gray-300 p-1 px-2 bg-gray-200 rounded-tl-lg ">وقت الاضافة</th>
+                        <th className="border-r border-gray-300 p-1 px-2 bg-gray-200 ">عدد الصور</th>
+                        <th className="border-r border-gray-300 p-1 px-2 bg-gray-200">القسم</th>
+                        <th className="border-r border-gray-300 p-1 px-2 bg-gray-200">السعر</th>
+                        <th className="border-r border-gray-300 p-1 px-2 bg-gray-200">الاسم</th>
+                        <th className="w-[120px] p-1 bg-gray-200 rounded-tr-lg text-center">
+                          <label htmlFor="select-all">تحديد الكل</label>
+                          <input
+                            id="select-all"
+                            type="checkbox"
+                            onChange={handleSelectAll}
+                            checked={selectedProducts.length === products.length}
+                          />
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {products.map((product) => (
+                        <tr
+                          className={`hover:bg-primary hover:text-white ${selectedProducts.includes(product.id) ? 'bg-secondary text-white' : 'bg-white'
+                            }`}
+                          key={product.id}
+                        >
+                          <td className="border p-2"><Link className="underline"  target='_blank' href={`/product/${product.id}`}>زيارة</Link></td>
+                          <td className="border p-2">{(product.createdAt).substring(0, 10)}</td>
+                          <td className="border p-2">{product.photos.length}</td>
+                          <td className="border p-2">{product.category.name}</td>
+                          <td className="border p-2">{product.price}</td>
+                          <td className="border p-2">{product.name}</td>
+                          <td className="border p-2">
+                            <input
+                              type="checkbox"
+                              value={product.id}
+                              onChange={handleSelect}
+                              checked={selectedProducts.includes(product.id)}
+                            />
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
 
-        <div className="w-[80%] mx-auto flex items-center justify-center p-5 mt-10">
-          <Pagination currentPage={currentPage} pageCount={totalPages} onPageChange={handlePageChange} />
-        </div>
-      </section>)
-      }
+                  <div className="w-[80%] mx-auto flex items-center justify-center p-5 mt-10">
+                    <Pagination currentPage={currentPage} pageCount={totalPages} onPageChange={handlePageChange} />
+                  </div>
+                </section>
+              )
+        }
 
-    
+      </>
+
+
+
 
       <div className="flex items-center justify-center mx-auto w-[80%] gap-5 my-10">
 
-        <div onClick={handleDelete} className="flex justify-between items-center gap-2 bg-green-400 text-white p-2 rounded cursor-pointer"> 
+        <div onClick={handleDelete} className="flex justify-between items-center gap-2 bg-red-400 text-white p-2 rounded cursor-pointer">
           <h1>حذف المنتجات({selectedProducts.length})</h1>
           <MdDelete />
         </div>
@@ -206,9 +228,9 @@ export default function ProductsTable() {
 
       </div>
 
+      
 
-
-      {isProductModalOpen && <AddProductModal isOpen={isProductModalOpen} onClose={() => setIsProductModalOpen(false)}   product={products.filter(product => product.id == selectedProducts[0])[0]} method={"put"} /> }
+      {isProductModalOpen && <ProductModal isOpen={isProductModalOpen} onClose={() => setIsProductModalOpen(false)} product={products.find(product => product.id === selectedProducts[0])} method={"put"} />}
 
     </div>
 

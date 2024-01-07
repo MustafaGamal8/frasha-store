@@ -1,19 +1,19 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from 'bcrypt';
 import Jwt from "jsonwebtoken";
+
 const prisma = new PrismaClient();
 
-
 export default async function handler(req, res) {
-  if (req.method == 'POST') {
+  if (req.method === 'POST') {
     const { username, password } = req.body;
 
-    // validition
+    // التحقق
     if (!username || !password) {
-      return res.status(400).json({ message: 'يرجي ادخال جميع البيانات' });
+      return res.status(400).json({ message: 'يرجى إدخال جميع البيانات' });
     }
     if (password.length < 6) {
-      return res.status(400).json({ message: 'الرقم السري يجب ان يكون اكبر من 6 احرف' });
+      return res.status(400).json({ message: 'يجب أن تكون كلمة المرور أكبر من 6 أحرف' });
     }
 
     const user = await prisma.admin.findFirst({
@@ -23,11 +23,11 @@ export default async function handler(req, res) {
     })
 
     if (!user) {
-      return res.status(400).json({ message: 'اسم المستخدم او كلمة المرور غير صحيحة' });
+      return res.status(400).json({ message: 'اسم المستخدم أو كلمة المرور غير صحيحة' });
     }
 
     if (!bcrypt.compareSync(password, user.password)) {
-      return res.status(400).json({ message: 'اسم المستخدم او كلمة المرور غير صحيحة' });     
+      return res.status(400).json({ message: 'اسم المستخدم أو كلمة المرور غير صحيحة' });     
     }
 
     const token = Jwt.sign(
@@ -44,6 +44,6 @@ export default async function handler(req, res) {
     res.setHeader('authorization', `Bearer ${token}`);
     res.status(200).json({ message: 'تم تسجيل الدخول بنجاح'  });
   } else {
-    res.status(405).json({ error: 'Method Not Allowed' });
+    res.status(405).json({ error: 'الطريقة غير مسموح بها' });
   }
 }

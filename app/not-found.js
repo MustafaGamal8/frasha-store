@@ -21,6 +21,7 @@ export default function CustomNotFound({ msg }) {
         <Image
           src={knitting}
           alt="Image"
+          priority
           className="w-full h-full drop-shadow-md object-cover"
         />
       </div>

@@ -24,8 +24,8 @@ export default  function CategoriesSection({ currentCategory }) {
           :<>
           <Link href={`/products`} ><li className={`category-item ${currentCategory == 'الكل' ? 'active' : ''}`}>الكل</li></Link>
           {categories.map((category, index) => (
-            <Link href={`/products?category=${category.name}`} key={index} className="category-item">
-              <li key={index} className={`category-item  ${currentCategory === category.name ? 'active' : ''}`}>
+            <Link href={`/products?categoryId=${category.id}`} key={index} className="category-item">
+              <li key={index} className={`category-item  ${currentCategory === category.id ? 'active' : ''}`}>
                 {category.name}
               </li>
             </Link>

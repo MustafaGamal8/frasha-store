@@ -89,7 +89,25 @@ export default function Navbar() {
         <section className='fixed top-0 left-0 h-screen w-full bg-white flex flex-col items-center justify-center gap-3 z-[100]'>
           <RxCross2 onClick={closeMenu} className='cursor-pointer text-3xl mb-10' />
           {renderMenuLinks(closeMenu)}
-          {/* Render other menu items here */}
+
+          
+          <section className='flex  flex-col items-center gap-2  '>
+                <Link href={'/favorites'} className='flex items-center gap-1 text-primary   cursor-pointer hover:bg-primary hover:text-white p-1 rounded transition-all'>
+                  <BsHeart />
+                  <h1 className='text-xl'>المفضلة </h1>
+                </Link>
+
+                <Link href={'/cart'} className='flex items-center gap-1 text-primary   cursor-pointer hover:bg-primary hover:text-white p-1 rounded transition-all'>
+                  <BsCart3 />
+                  <h1 className='text-xl'>سلة المشتريات</h1>
+                </Link>
+
+
+                <div onClick={handelLoginClick} className='flex items-center gap-1 bg-primary text-white p-1 rounded cursor-pointer' >
+                  <CiUser />
+                  <h1 className='text-xl'>{isAdmin ? 'الدخول ' : 'تسجيل الدخول'}</h1>
+                </div>
+              </section>
         </section>
       )}
 

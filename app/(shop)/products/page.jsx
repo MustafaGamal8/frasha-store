@@ -6,7 +6,6 @@ import { GoSearch } from "react-icons/go";
 import Pagination from "./Pagination";
 import ProductsSection from "../components/ProductsSection";
 import { useSearchParams } from "next/navigation";
-import Link from 'next/link';
 import CategoriesSection from "../components/CategoriesSection";
 
 
@@ -24,10 +23,10 @@ export default function Products() {
 
   useEffect(() => {
     setLoading(true);
-    setCurrentCategory(params.get('category') || 'الكل');
+    setCurrentCategory(params.get('categoryId') || 'الكل');
     async function fetchData() {
       try {
-        const response = await axios.get(`/api/products?page=${currentPage}&category=${params.get('category') || 'الكل'}`);
+        const response = await axios.get(`/api/products?page=${currentPage}&categoryId=${params.get('categoryId') || 'الكل'}`);
   
         setProducts(response.data.products);
   
@@ -63,7 +62,7 @@ export default function Products() {
 
   return (
     <>
-      <h1 className="text-center text-3xl font-bold  text-secondary mt-10"> المنتجات - {currentCategory} </h1>
+      <h1 className="text-center text-3xl font-bold  text-secondary mt-10"> المنتجات  </h1>
 
       <form onSubmit={handleSearch} className="lg:w-[50%] md:w-[70%] w-[80%] bg-white m-auto p-2 flex items-center rounded drop-shadow mt-16">
         <button className="text-white rounded text-xl bg-secondary p-1 px-3 ">بحث</button>

@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import sharp from 'sharp';
-import  Jwt  from 'jsonwebtoken';
+import CheckAuth from '@/services/CheckAuth';
 
 const prisma = new PrismaClient();
 
@@ -13,42 +13,19 @@ export const config = {
 }
 
 export default async function handler(req, res) {
-
-   await checkAuth(req, res);
-
-   if (req.method == "POST") {
-    return uploadProduct(req, res);    
+  if (req.method == "POST") {
+    const isAdmin = await CheckAuth(req, res);
+    isAdmin && await uploadProduct(req, res);    
   }
   else if (req.method == "PUT") {
-    return updateProduct(req, res);
+    const isAdmin = await CheckAuth(req, res);
+    isAdmin && await updateProduct(req, res);
   }
   else{
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
 }
 
-
-
-const checkAuth = async (req, res) => {
-
-  let token = req.headers["authorization"];
-    token = token ? token.replace("Bearer ", "") : "";
-    const decodedToken = Jwt.decode(token);
-
-    if (!decodedToken) {
-      return res.status(401).json({ error: 'الرجاء تسجيل الدخول' });
-    }
-
-    const admin = await prisma.admin.findUnique({
-      where: {
-        id: decodedToken.userId
-      }
-    })
-
-    if (!admin) {
-      return res.status(401).json({ error: 'الرجاء تسجيل الدخول' });      
-    }
-}
 
 const uploadPhotos = async (ProductId, photos) => {
   for (const p of photos) {

@@ -15,13 +15,13 @@ export default async function handler(req, res) {
         return res.status(404).json({ error: 'الصورة غير موجودة' });
       }
 
-      const imageData = image.photo; // Assuming 'photo' contains the image buffer
+      const imageData = image.photo; 
 
       if (!imageData) {
         return res.status(404).json({ error: 'بيانات الصورة غير موجودة' });
       }
 
-      res.setHeader('Content-Type', image.type); // Set appropriate content type
+      res.setHeader('Content-Type', image.type);
       res.status(200).send(imageData);
     } catch (error) {
       console.log(error);

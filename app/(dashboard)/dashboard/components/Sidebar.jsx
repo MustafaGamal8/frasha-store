@@ -23,9 +23,9 @@ const Sidebar = () => {
 
   const sidebarItems = [
     { text: 'لوحة التحكم', icon: <HiOutlineHome />, link: '/dashboard' },
-    { text: 'الطلبات', icon: <HiOutlineShoppingBag />, link: '/dashboard/orders' },
     { text: 'المنتجات', icon: <HiOutlineCube />, link: '/dashboard/products' },
     { text: 'الأقسام', icon: <AiOutlineBars />, link: '/dashboard/categories' },
+    { text: 'الطلبات', icon: <HiOutlineShoppingBag />, link: '/dashboard/orders' },
     { text: 'المستخدمين', icon: <HiOutlineUser />, link: '/dashboard/admins' },
   ];
 
@@ -42,14 +42,14 @@ const Sidebar = () => {
   }
 
   return (
-    <aside className="bg-white w-[100px] h-full flex flex-col justify-between items-center pb-5 drop-shadow-md">
+    <aside className="fixed right-0 top-0 bg-white md:w-[100px] w-full md:h-full flex md:flex-col justify-between items-center md:pb-5 drop-shadow-md">
       <section>
         <Link href="/" >
-          <Image src={'/logo.png'} width={150} height={150} alt="Logo" />
+          <Image className='w-[80px] h-[80px] object-contain' src={'/logo.png'} width={150} height={150} alt="Logo" />
         </Link>
       </section>
 
-      <ul className='flex flex-col gap-5'>
+      <ul className='flex md:flex-col md:gap-5 gap-1'>
         {sidebarItems.map((item, index) => (
           <li
             key={index}
@@ -57,7 +57,7 @@ const Sidebar = () => {
             onMouseEnter={() => handleHover(index)}
             onMouseLeave={resetHover}
           >
-            <Link href={item.link} className="flex items-center justify-center w-full h-full  text-2xl">
+            <Link href={item.link} className="flex items-center justify-center w-full h-full  md:text-2xl text-xl">
               <span className='relative'>
                 {item.icon}
                 {hoveredItem === index && (
@@ -71,8 +71,8 @@ const Sidebar = () => {
         ))}
       </ul>
 
-      <div className="mt-4">
-        <button onClick={logoutHandler}  className="flex items-center justify-center w-12 h-12 rounded-lg bg-secondary text-white hover:bg-primary">
+      <div className="md:mt-4 mx-1">
+        <button onClick={logoutHandler}  className="flex items-center justify-center md:w-12 w-10 md:h-12 h-10 rounded-lg bg-secondary text-white hover:bg-primary">
           <FiLogOut />
         </button>
       </div>

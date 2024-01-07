@@ -26,10 +26,13 @@ export default function ProtectedRoute({ children }) {
       {
         isAdmin ?
           <>
-            <main className="flex justify-between w-full h-screen overflow-y-scroll">
-              <section className="w-full h-full" >
+            <main className="flex flex-col-reverse md:flex-row justify-between w-full h-full ">
+              <section className="w-full " >
                 {children}
               </section>
+
+              <div className="md:w-[100px] w-full h-[70px]"></div>
+
               <Sidebar />
             </main>
           </> : <CustomNotFound msg="الرجاء تسجيل الدخول" />
