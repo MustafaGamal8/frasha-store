@@ -6,18 +6,19 @@ export default async function handler(req, res) {
     const prisma = new PrismaClient();
     try {
       const products = await prisma.product.findMany({
-        select: {
-          id: true,
-          name: true,
-          price: true,
-          categoryId: true,
-          link: true,
+        include: {
+          category: {
+            select: {
+              id: true,
+              name: true,
+            }
+          },
           photos: {
             select: {
-              url: true
+              url: true,
+              id: true
             },
-            take: 1
-          }
+          },
         },
         where: {
           name: {
@@ -25,11 +26,10 @@ export default async function handler(req, res) {
           }
         }
       });
-      await prisma.$disconnect(); // Disconnect from the Prisma client after the operation
+
       return res.status(200).json(products);
     } catch (error) {
       console.error(error);
-      await prisma.$disconnect(); // Disconnect from the Prisma client in case of an error
       return res.status(500).json({ error: "حدث خطأ أثناء البحث عن المنتجات" });
     }
   }

@@ -9,14 +9,17 @@ import GetList from '../logic/getList';
 export default function page() {
   const [cart, setCart] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
   
 
   useEffect(() => {
     const productsIds = JSON.parse(localStorage.getItem('cart'))
 
     async function fetchCart() {
+      setLoading(true)
       const products = await GetList(productsIds)
       setCart(products)
+      setLoading(false)
     }
 
     fetchCart()
@@ -38,7 +41,7 @@ export default function page() {
         <BsCart3 />
         <h1 >سلة المشتريات </h1>
       </div>
-      <ProductsSection products={cart} />
+      <ProductsSection isloading={loading} products={cart} />
 
 
       {

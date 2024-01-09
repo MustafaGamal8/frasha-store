@@ -8,13 +8,16 @@ import GetList from '../logic/getList';
 
 export default function page() {
   const [favorites, setFavorites] = useState([])
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const productsIds = JSON.parse(localStorage.getItem('favorites'))
 
     async function fetchFavorites() {
+      setLoading(true)
       const products = await GetList(productsIds)
       setFavorites(products)    
+      setLoading(false)
     }
 
     fetchFavorites()
@@ -31,7 +34,7 @@ export default function page() {
       <FaHeart />
         <h1 > المفضلة </h1>
       </div>
-      <ProductsSection products={favorites} />
+      <ProductsSection isloading={loading} products={favorites} />
 
 
     </div>

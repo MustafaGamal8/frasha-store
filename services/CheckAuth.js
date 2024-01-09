@@ -2,13 +2,12 @@
 import { PrismaClient } from "@prisma/client";
 import Jwt from "jsonwebtoken";
 
-export default async function CheckAuth (req, res)  {
+export default async function CheckAuth(req, res) {
   try {
     const prisma = new PrismaClient();
-  let token = req.headers["authorization"];
+    let token = req.headers["authorization"];
     token = token ? token.replace("Bearer ", "") : "";
     const decodedToken = Jwt.decode(token);
-
     if (!decodedToken) {
       res.status(401).json({ error: 'الرجاء تسجيل الدخول' });
       return false
@@ -21,7 +20,7 @@ export default async function CheckAuth (req, res)  {
     })
 
     if (!admin) {
-      res.status(401).json({ error: 'الرجاء تسجيل الدخول' });      
+      res.status(401).json({ error: 'الرجاء تسجيل الدخول' });
       return false
     }
 

@@ -61,6 +61,11 @@ export default function CategoriesTable() {
       toast.error('يجب تحديد عنصر واحد علي الاقل');
       return
     }
+
+    if (!confirm('هل تريد حذف هذه الاقسام ؟')) {
+      return
+    }
+
     try {
       toast.info('جاري الحذف...');
       await axios.delete('/api/categories', {
@@ -92,7 +97,6 @@ export default function CategoriesTable() {
   return (
     <>
 
-      <>
         {
           loading ?
 
@@ -113,7 +117,7 @@ export default function CategoriesTable() {
                   <table className="w-full border-collapse overflow-x-auto whitespace-nowrap overflow-hidden">
                     <thead>
                       <tr>
-                        <th className="border-r border-gray-300 p-1 px-2 bg-gray-200">زيارة</th>
+                        <th className="border-r border-gray-300 p-1 px-2 bg-gray-200 rounded-tl">زيارة</th>
                         <th className="border-r border-gray-300 p-1 px-2 bg-gray-200">وقت الاضافة</th>
                         <th className="border-r border-gray-300 p-1 px-2 bg-gray-200">عدد منتجات القسم</th>
                         <th className="border-r border-gray-300 p-1 px-2 bg-gray-200">القسم</th>
@@ -156,7 +160,6 @@ export default function CategoriesTable() {
               )
         }
 
-      </>
 
 
 

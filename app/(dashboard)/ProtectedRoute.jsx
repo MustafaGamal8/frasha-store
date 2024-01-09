@@ -7,7 +7,7 @@ import Loading from "../loading";
 
 
 export default function ProtectedRoute({ children }) {
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -16,7 +16,7 @@ export default function ProtectedRoute({ children }) {
 
   setTimeout(() => {
     setLoading(false)
-  }, 1000);
+  }, 300);
 
   return (
     <>
@@ -24,10 +24,10 @@ export default function ProtectedRoute({ children }) {
         loading && <Loading   /> 
       }
       {
-        isAdmin ?
+        isAdmin &&  isAdmin ?
           <>
-            <main className="flex flex-col-reverse md:flex-row justify-between w-full h-full ">
-              <section className="w-full " >
+            <main className="flex flex-col-reverse md:flex-row justify-between w-full h-screen ">
+              <section className="w-full h-full "  >
                 {children}
               </section>
 

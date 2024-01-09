@@ -40,6 +40,11 @@ export default function OrderModal({ isOpen, onClose, cart }) {
     } catch (error) {
       toast.error(error?.response?.data?.error || 'حدث خطأ ما')
       
+    }finally {
+      onClose()
+      setName('')
+      setPhone('')
+      setSure(false)
     }
 
 

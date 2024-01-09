@@ -18,6 +18,7 @@ export default async function handler(req, res) {
 async function getProducts(req, res) {
   try {
     const page = parseInt(req.query.page) || 1;
+    
     const categoryId = req.query.categoryId || "الكل";
     const take = 10;
     const skip = (page - 1) * take;

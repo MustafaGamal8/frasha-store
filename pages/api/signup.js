@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
-const hashPassword = async (password) => {
+export const hashPassword = async (password) => {
   try {
     return await bcrypt.hash(password, 10);
   } catch (error) {
@@ -39,7 +39,7 @@ export default async function handler(req, res) {
       });
 
       if (existingUser) {
-        return res.status(400).json({ message: 'اسم المستخدم موجود مسبقاً' });
+        return res.status(400).json({ error: 'اسم المستخدم موجود مسبقاً' });
       }
 
       const hashedPassword = await hashPassword(password);

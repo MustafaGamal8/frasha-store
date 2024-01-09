@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation'
 import Modal from 'react-modal';
 import { IoEye, IoEyeOff, IoClose } from 'react-icons/io5';
-import { Login } from '@/services/auth';
 import { toast } from 'react-toastify';
 import { LoginLoader } from './Random';
+import { setCookie } from 'cookies-next';
+import axios from 'axios';
 
 
 Modal.setAppElement("body")
@@ -28,22 +29,39 @@ export default function LoginModal({ isOpen, onClose }) {
     }
     setLoading(true);
 
-    if (!await Login({ username, password })) {
+    try {
+      const response = await axios.post(`/api/login`, {
+        username,
+        password,
+      });
+
+      let token = response.headers['authorization'];
+      token = token.replace('Bearer ', '')
+
+      setCookie('token', token, {
+        maxAge: 24 * 60 * 60, // 1 day
+      })
+
+      toast.success(response.data.message || "تم تسجيل الدخول بنجاح");
+
+      
+      setUsername('');
+      setPassword('');
+      onClose();
+      router.push('/dashboard');
+    } catch (error) {
+      console.log(error)
+      toast.error(error.response.data.error || "فشل في تسجيل الدخول");
+    } finally {
       setLoading(false);
-      return
     }
-    setUsername('');
-    setLoading(false);
-    setPassword('');
-    onClose();
-    router.push('/dashboard');
   };
 
 
 
   return (
-    <Modal isOpen={isOpen} onRequestClose={onClose}  className="fixed inset-0 flex justify-center items-center bg-gray-700 bg-opacity-70 z-[10]">
-      <div className="relative flex flex-col justify-between bg-white rounded-lg p-8 w-[550px] h-[430px] max-w-full mx-4" > 
+    <Modal isOpen={isOpen} onRequestClose={onClose} className="fixed inset-0 flex justify-center items-center bg-gray-700 bg-opacity-70 z-[10]">
+      <div className="relative flex flex-col justify-between bg-white rounded-lg p-8 w-[550px] h-[430px] max-w-full mx-4" >
         <button onClick={onClose} className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 transition duration-300">
           <IoClose size={24} />
         </button>

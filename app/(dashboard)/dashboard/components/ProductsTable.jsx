@@ -7,7 +7,8 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import ProductModal from "./ProductModal";
 import { getCookie } from "cookies-next";
-import  Link  from 'next/link';
+import Link from 'next/link';
+import { GoSearch } from "react-icons/go";
 
 
 export default function ProductsTable() {
@@ -19,21 +20,23 @@ export default function ProductsTable() {
   const [categories, setCategories] = useState([]);
   const [currentCategory, setCurrentCategory] = useState('الكل');
   const [loading, setLoading] = useState(false);
+  const [search, setSearch] = useState('');
 
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
 
 
-  
+
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
         const [productsResponse, categoriesResponse] = await Promise.all([
-          axios.get(`/api/products?page=${currentPage}&category=${currentCategory}`),
+          axios.get(`/api/products?page=${currentPage}&categoryId=${categories.find((category) => category.name === currentCategory)?.id || 'الكل'}`),
           axios.get('/api/categories')
         ]);
         setProducts(productsResponse.data.products);
+        console.log(productsResponse.data.products)
         setProductsCount(productsResponse.data.productsCount);
         setTotalPages(parseInt(productsResponse.data.productsCount / 10) + 1);
 
@@ -41,7 +44,7 @@ export default function ProductsTable() {
       } catch (error) {
         console.log(error)
         toast.error(error.response?.data?.error || 'حدث خطأ ما');
-      }finally {
+      } finally {
         setLoading(false);
       }
     };
@@ -79,15 +82,20 @@ export default function ProductsTable() {
   const handelChangeCategory = (event) => {
     setCurrentCategory(event.target.value);
     setCurrentPage(1);
-  } 
+  }
   const handleDelete = async () => {
     if (selectedProducts.length === 0) {
       toast.error('يجب تحديد عنصر واحد علي الاقل');
       return
     }
+
+    if (!confirm('هل تريد حذف هذه المنتجات؟')) {
+      return
+    }
+
     const loadingToast = toast.loading('جاري الحذف...');
     try {
-      
+
       await axios.delete('/api/products', {
         data: {
           productsIds: selectedProducts
@@ -102,7 +110,7 @@ export default function ProductsTable() {
     } catch (error) {
       console.log(error)
       toast.error(error.response?.data?.error || 'حدث خطأ ما');
-    }finally {
+    } finally {
       toast.dismiss(loadingToast);
     }
   }
@@ -115,6 +123,18 @@ export default function ProductsTable() {
     setIsProductModalOpen(true);
   }
 
+
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    try {
+      toast.info('جاري البحث ...');
+      const response = await axios.get(`/api/products/search?search=${search}`);
+      setProducts(response.data);
+      setProductsCount(response.data.length);
+    } catch (error) {
+      toast.error(error.response.data.error || 'حدث خطأ ما');
+    }
+  }
   return (
     <div className="p-6 bg-white rounded shadow-lg">
       <h1 className="text-3xl font-bold mb-4 text-center">
@@ -138,6 +158,13 @@ export default function ProductsTable() {
       </div>
 
 
+
+      <form onSubmit={handleSearch} className="lg:w-[50%] md:w-[70%] w-[90%] bg-white m-auto p-2 flex items-center rounded drop-shadow my-5">
+        <button className="text-white rounded text-xl bg-secondary p-1 px-3 ">بحث</button>
+        <input type="text" id="search" name="search" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="البحث" className="w-full p-1 outline-none text-right" />
+        <label htmlFor="search" className="text-primary text-xl"><GoSearch /></label>
+      </form>
+
       <>
         {
           loading ?
@@ -151,21 +178,24 @@ export default function ProductsTable() {
             )
             :
             products.length == 0 ?
-              <h1 className="text-center text-2xl font-bold  text-secondary my-10">لا يوجد منتجات في هذا القسم</h1>
+              <h1 className="text-center text-2xl font-bold  text-secondary my-10">لا يوجد منتجات   </h1>
               :
               (
                 <section className="bg-white p-2 overflow-x-auto w-full rounded-t-lg">
 
+
+
+
                   <table className="w-full border-collapse overflow-x-auto whitespace-nowrap overflow-hidden">
                     <thead>
-                      <tr>
-                        <th className="border-r border-gray-300 p-1 px-2 bg-gray-200 rounded-tl-lg ">زيارة</th>
-                        <th className="border-r border-gray-300 p-1 px-2 bg-gray-200 rounded-tl-lg ">وقت الاضافة</th>
-                        <th className="border-r border-gray-300 p-1 px-2 bg-gray-200 ">عدد الصور</th>
-                        <th className="border-r border-gray-300 p-1 px-2 bg-gray-200">القسم</th>
-                        <th className="border-r border-gray-300 p-1 px-2 bg-gray-200">السعر</th>
-                        <th className="border-r border-gray-300 p-1 px-2 bg-gray-200">الاسم</th>
-                        <th className="w-[120px] p-1 bg-gray-200 rounded-tr-lg text-center">
+                      <tr className=" bg-gray-200 ">
+                        <th className="border-x border-gray-300 p-1">زيارة</th>
+                        <th className="border-x border-gray-300 p-1">وقت الاضافة</th>
+                        <th className="border-x border-gray-300 p-1">عدد الصور</th>
+                        <th className="border-x border-gray-300 p-1">القسم</th>
+                        <th className="border-x border-gray-300 p-1">السعر</th>
+                        <th className="border-x border-gray-300 p-1">الاسم</th>
+                        <th className="w-[120px] p-1 ">
                           <label htmlFor="select-all">تحديد الكل</label>
                           <input
                             id="select-all"
@@ -183,7 +213,7 @@ export default function ProductsTable() {
                             }`}
                           key={product.id}
                         >
-                          <td className="border p-2"><Link className="underline"  target='_blank' href={`/product/${product.id}`}>زيارة</Link></td>
+                          <td className="border p-2"><Link className="underline" target='_blank' href={`/product/${product.id}`}>زيارة</Link></td>
                           <td className="border p-2">{(product.createdAt).substring(0, 10)}</td>
                           <td className="border p-2">{product.photos.length}</td>
                           <td className="border p-2">{product.category.name}</td>
@@ -228,7 +258,7 @@ export default function ProductsTable() {
 
       </div>
 
-      
+
 
       {isProductModalOpen && <ProductModal isOpen={isProductModalOpen} onClose={() => setIsProductModalOpen(false)} product={products.find(product => product.id === selectedProducts[0])} method={"put"} />}
 
