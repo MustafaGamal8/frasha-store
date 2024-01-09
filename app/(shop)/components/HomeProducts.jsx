@@ -56,10 +56,6 @@ export default async function HomeProducts() {
 
   return (
     <section className="w-full m-auto my-28 ">
-
-
-
-    
         <CategoriesSection currentCategory="الكل" categories={categories} />
 
       <ProductsSection products={products} />

@@ -30,12 +30,12 @@ const ProductDetail = () => {
     if (!favorites.includes(id)) {
       favorites.push(id);
       localStorage.setItem('favorites', JSON.stringify(favorites));
-      toast.success("تم اضافة المنتج الي المفضلات")
+      toast.success("تم اضافة المنتج الي المفضلة")
       return
     }
     favorites.splice(favorites.indexOf(id), 1);
     localStorage.setItem('favorites', JSON.stringify(favorites));
-    toast.info("تم ازالة المنتج من المفضلات")
+    toast.info("تم ازالة المنتج من المفضلة")
   }
 
   const handelCart = (id) => {
@@ -66,7 +66,7 @@ const ProductDetail = () => {
                 product.photos && product.photos.length <= 1 ?
                   (
                     <div className='lg:w-2/5 w-full flex items-center  justify-center'>
-                      <img src={product.photos[0]?.url || '/logo.png'} className='w-full  md:w-[450px] object-cover my-10' alt="" />
+                      <img src={product.photos[0]?.url || '/logo.png'} className='w-full  md:w-[450px] object-cover my-10 ' alt="" />
                     </div>
 
                   )
@@ -97,13 +97,13 @@ const ProductDetail = () => {
                     </Link>
                   }
 
-                  <div className="flex items-center justify-center gap-5">
+                  <div className="flex items-center justify-center gap-5 whitespace-nowrap text-sm md:text-lg">
                     <button onClick={() => handelCart(product.id)} className="flex items-center bg-green-400 hover:bg-green-500 text-white md:px-4 md:py-2  p-2 rounded-md mr-4 transition-all duration-300">
-                      <AiOutlineShoppingCart className="mr-2" />
+                      <AiOutlineShoppingCart className="md:mr-2 mr-1" />
                       اضافة الي سلة المشتريات
                     </button>
                     <button onClick={() => handelFavorite(product.id)} className="flex items-center border border-primary text-primary hover:bg-primary hover:text-white md:px-4 md:py-2 p-2 rounded-md transition-all duration-300 ">
-                      <AiOutlineHeart className="mr-2" />
+                      <AiOutlineHeart className="md:mr-2 mr-1" />
                       اضافة للمفضلة
                     </button>
                   </div>
@@ -134,7 +134,7 @@ function LoadingProductPage() {
 
           <div className='flex flex-col lg:flex-row items-center justify-center w-full h-full  gap-10'>
 
-            <div className='lg:w-[40%] w-[80%] h-[500px] bg-slate-300 animate-pulse'></div>
+            <div className='lg:w-[40%] w-[80%] md:h-[500px] h-[280px] bg-slate-300 animate-pulse'></div>
 
             <div className='flex flex-col '>
               <div className='md:w-[500px] w-[250px] h-10 bg-slate-500 animate-pulse'></div>

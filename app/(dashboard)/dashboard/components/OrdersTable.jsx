@@ -133,7 +133,7 @@ export default function OrdersTable() {
                     <tbody>
                       {orders.map((order) => (
                         <tr
-                          className={`hover:bg-primary hover:text-white ${selcetedOrders.includes(order.id) ? 'bg-secondary text-white' : 'bg-white'
+                          className={`md:hover:bg-primary md:hover:text-white ${selcetedOrders.includes(order.id) ? 'bg-secondary text-white' : 'bg-white'
                             }`}
                           key={order.id}
                         >

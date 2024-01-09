@@ -48,7 +48,7 @@ const Product = ({ product }) => {
 
 
   return (
-    <div className="w-full bg-primary drop-shadow-lg rounded-lg ">
+    <div className="w-full  drop-shadow-lg rounded-lg ">
       <section className="group relative  bg-[#f6f6f6] w-full h-[350px] cursor-pointer flex items-center justify-center">
         <Link id='product_image' href={`/product/${id}`} className='w-full h-full ' >
           <img className="w-full h-full "  src={photos && photos[0] ? photos[0].url : '/logo.png'} alt="صورة المنتج" />
@@ -76,9 +76,9 @@ const Product = ({ product }) => {
         </div>
       </section>
 
-      <section className="text-center text-2xl mt-2 text-white">
-        <h1 >{name}</h1>
-        <p>{price}$</p>
+      <section className="text-center text-2xl pt-2 bg-primary text-white">
+        <h1 className='text-2xl'>{name}</h1>
+        <h2 className='text-xl'>{price} $</h2>
       </section>
     </div>
   );

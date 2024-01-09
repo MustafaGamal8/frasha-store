@@ -29,8 +29,8 @@ export default function page() {
 
 
   return (
-    <div className='mb-28'>
-      <div className='flex justify-center items-center  m-auto w-1/2 text-center text-3xl font-bold  text-secondary  my-10 gap-2'>
+    <div className='mb-28 '>
+      <div className='flex justify-center items-center  m-auto md:w-1/2 w-[80%] text-center text-3xl font-bold  text-secondary  my-10 gap-2 '>
       <FaHeart />
         <h1 > المفضلة </h1>
       </div>

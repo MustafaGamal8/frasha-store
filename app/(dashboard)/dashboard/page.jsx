@@ -76,9 +76,9 @@ const Dashboard = () => {
         loading ?
           <div className="w-full h-full flex flex-col gap-20 items-center mt-5 ">
             <section className="flex gap-3">
-              <div className="w-[250px] h-16 bg-slate-400 animate-pulse"></div>
-              <div className="w-[250px] h-16 bg-slate-400 animate-pulse"></div>
-              <div className="w-[250px] h-16 bg-slate-400 animate-pulse"></div>
+              <div className="md:w-[250px] w-[100px] h-16 bg-slate-400 animate-pulse"></div>
+              <div className="md:w-[250px] w-[100px] h-16 bg-slate-400 animate-pulse"></div>
+              <div className="md:w-[250px] w-[100px] h-16 bg-slate-400 animate-pulse"></div>
             </section>
 
 

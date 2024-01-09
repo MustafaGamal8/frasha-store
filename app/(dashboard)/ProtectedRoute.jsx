@@ -27,11 +27,11 @@ export default function ProtectedRoute({ children }) {
         isAdmin &&  isAdmin ?
           <>
             <main className="flex flex-col-reverse md:flex-row justify-between w-full h-screen ">
-              <section className="w-full h-full "  >
+              <section className="w-full h-full  overflow-x-hidden"  >
                 {children}
               </section>
 
-              <div className="md:w-[100px] w-full h-[70px]"></div>
+              <div className="md:w-[100px] w-full md:h-[70px] h-[85px]"></div>
 
               <Sidebar />
             </main>

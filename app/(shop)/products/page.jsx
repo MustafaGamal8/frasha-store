@@ -70,7 +70,7 @@ export default function Products() {
         <label htmlFor="search" className="text-primary text-xl"><GoSearch /></label>
       </form>
 
-      <CategoriesSection  currentCategory={currentCategory} />
+      <div className="w-full  "><CategoriesSection  currentCategory={currentCategory} /></div>
       <ProductsSection isloading={loading} products={products} />
 
       <div className="flex flex-wrap items-center justify-center gap-3">

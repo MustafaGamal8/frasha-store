@@ -26,7 +26,7 @@ const Sidebar = () => {
     { text: 'المنتجات', icon: <HiOutlineCube />, link: '/dashboard/products' },
     { text: 'الأقسام', icon: <AiOutlineBars />, link: '/dashboard/categories' },
     { text: 'الطلبات', icon: <HiOutlineShoppingBag />, link: '/dashboard/orders' },
-    { text: 'المستخدمين', icon: <HiOutlineUser />, link: '/dashboard/admins' },
+    { text: 'المسؤولين', icon: <HiOutlineUser />, link: '/dashboard/admins' },
   ];
 
 
@@ -43,6 +43,7 @@ const Sidebar = () => {
 
   return (
     <aside className="fixed right-0 top-0 bg-white md:w-[100px] w-full md:h-full flex md:flex-col justify-between items-center md:pb-5 drop-shadow-md">
+      
       <section>
         <Link href="/" >
           <Image className='w-[80px] h-[80px] object-contain' src={'/logo.png'} width={150} height={150} alt="Logo" />

@@ -31,7 +31,7 @@ export default function Header() {
     <header>
       <section className="relative w-full h-[450px] bg-primary flex md:flex-row flex-col-reverse items-center  justify-around z-[-1] p-2 ">
         <div className="w-[300px] md:w-[600px] h-full  rounded overflow-hidden"><Image className="h-full w-full object-contain" src={i2} alt="img" /></div>
-        <h1 className="text-white md:text-3xl text-xl text-right">متخصصون في بيع منتجات الهاند ميد والتطريز <br />والهدايا و الملابس والاكسسورات</h1>
+        <h1 className="text-white md:text-3xl text-xl text-right md:mt-0 mt-10">متخصصون في بيع منتجات الهاند ميد والتطريز <br />والهدايا و الملابس والاكسسورات</h1>
 
         <div className="w-full absolute -bottom-1 left-0 z-[-2] ">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
@@ -41,7 +41,7 @@ export default function Header() {
         </div>
       </section>
 
-      <div className="w-full flex items-center justify-center md:mt-20 drop-shadow-md"><Image width={250} height={250} src={"/logo.png"} alt="img" /></div>
+      <div className="w-full flex items-center justify-center md:mt-20 drop-shadow-md"><img className="w-[250px] h-[250px]" src={"/logo.png"} alt="img" /></div>
 
       <section className="w-full flex flex-wrap items-center justify-center gap-16  p-4 ">
         {sectionData.map((item) => (

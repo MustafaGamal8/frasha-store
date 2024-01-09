@@ -1,5 +1,4 @@
 "use client"
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { BsCart3, BsHeart } from "react-icons/bs";
 import { CiUser, CiMenuFries } from "react-icons/ci";
@@ -49,13 +48,12 @@ export default function Navbar() {
   return (
     <>
       <nav className='w-full h-16 flex items-center justify-between gap-4 p-4 drop-shadow bg-white select-none'>
-        <section>
-          <Link href='/'>
-            <Image
+        <section className='w-[80px]'>
+          <Link href='/' >
+            <img
               src='/logo.png'
               alt='logo'
-              width={100}
-              height={100}
+              className='w-full h-full'
             />
           </Link>
         </section>
@@ -92,18 +90,18 @@ export default function Navbar() {
 
           
           <section className='flex  flex-col items-center gap-2  '>
-                <Link href={'/favorites'} className='flex items-center gap-1 text-primary   cursor-pointer hover:bg-primary hover:text-white p-1 rounded transition-all'>
+                <Link onClick={closeMenu} href={'/favorites'} className='flex items-center justify-center gap-1 text-primary   cursor-pointer hover:bg-primary hover:text-white p-1 rounded transition-all w-[160px]'>
                   <BsHeart />
                   <h1 className='text-xl'>المفضلة </h1>
                 </Link>
 
-                <Link href={'/cart'} className='flex items-center gap-1 text-primary   cursor-pointer hover:bg-primary hover:text-white p-1 rounded transition-all'>
+                <Link onClick={closeMenu} href={'/cart'} className='flex items-center gap-1 text-primary   cursor-pointer hover:bg-primary hover:text-white p-1 rounded transition-all w-[160px]'>
                   <BsCart3 />
                   <h1 className='text-xl'>سلة المشتريات</h1>
                 </Link>
 
 
-                <div onClick={handelLoginClick} className='flex items-center gap-1 bg-primary text-white p-1 rounded cursor-pointer' >
+                <div onClick={handelLoginClick} className='flex items-center justify-center gap-1 bg-primary text-white p-1 rounded cursor-pointer w-[160px]' >
                   <CiUser />
                   <h1 className='text-xl'>{isAdmin ? 'الدخول ' : 'تسجيل الدخول'}</h1>
                 </div>

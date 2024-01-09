@@ -24,10 +24,10 @@ export default function ProductsSection({ products,isloading }) {
           <div key={index} className='md:w-[330px] w-[75%] m-5'><LoadingProduct/></div>
         ))
         : 
-        products.length == 0 ? 
+        products && products.length == 0 ? 
         <h1 className="text-center text-3xl font-bold  text-secondary my-20"> ....لا يوجد منتجات</h1>
         :
-        (products.map((product, index) => (
+        ( products && products.map((product, index) => (
           <div key={product.id} className="md:w-[330px] w-[70%] m-5">
             <Product product={product} />
           </div>

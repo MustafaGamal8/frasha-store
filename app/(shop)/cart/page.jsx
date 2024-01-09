@@ -37,9 +37,9 @@ export default function page() {
 
   return (
     <div>
-      <div className='flex justify-center items-center  m-auto w-1/2 text-center text-3xl font-bold  text-secondary  my-10 gap-2'>
+      <div className='flex justify-center items-center  m-auto md:w-1/2 w-[80%] text-center text-3xl font-bold  text-secondary  my-10 gap-2 '>
         <BsCart3 />
-        <h1 >سلة المشتريات </h1>
+        <h1  >سلة المشتريات </h1>
       </div>
       <ProductsSection isloading={loading} products={cart} />
 

@@ -209,7 +209,7 @@ export default function ProductsTable() {
                     <tbody>
                       {products.map((product) => (
                         <tr
-                          className={`hover:bg-primary hover:text-white ${selectedProducts.includes(product.id) ? 'bg-secondary text-white' : 'bg-white'
+                          className={`md:hover:bg-primary md:hover:text-white ${selectedProducts.includes(product.id) ? 'bg-secondary text-white' : 'bg-white'
                             }`}
                           key={product.id}
                         >

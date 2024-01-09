@@ -135,7 +135,7 @@ export default function CategoriesTable() {
                     <tbody>
                       {categories.map((category) => (
                         <tr
-                          className={`hover:bg-primary hover:text-white ${selectedCategories.includes(category.id) ? 'bg-secondary text-white' : 'bg-white'
+                          className={`md:hover:bg-primary md:hover:text-white ${selectedCategories.includes(category.id) ? 'bg-secondary text-white' : 'bg-white'
                             }`}
                           key={category.id}
                         >
