@@ -99,7 +99,7 @@ const ProductModal = ({ isOpen, onClose ,product,method }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { name, price, description, link, categoryId, photos,deletedPhotos } = productData;
+    const { name, price, description, categoryId, photos,deletedPhotos } = productData;
     if (!name || !price || !description  || !categoryId ) {
       return toast.error('يجب تعبئة جميع الحقول');
     }
@@ -109,10 +109,7 @@ const ProductModal = ({ isOpen, onClose ,product,method }) => {
     if (method === 'put') {
       await UpdateProduct({ name, price, description, link, categoryId, photos, deletedPhotos,productId: product.id });      
     }else{
-      for (let i = 0; i <10; i++) {
       await PostProduct({ name, price, description, link, categoryId, photos });
-        
-      }
     }
 
     toast.dismiss(loadingToast);
