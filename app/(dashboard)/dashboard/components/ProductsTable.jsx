@@ -36,7 +36,6 @@ export default function ProductsTable() {
           axios.get('/api/categories')
         ]);
         setProducts(productsResponse.data.products);
-        console.log(productsResponse.data.products)
         setProductsCount(productsResponse.data.productsCount);
         setTotalPages(parseInt(productsResponse.data.productsCount / 10) + 1);
 

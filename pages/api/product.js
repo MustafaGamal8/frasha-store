@@ -70,11 +70,10 @@ const uploadProduct = async (req, res) => {
       return res.status(413).json({ error: 'حجم الملف كبير جدا' });
     }
 
-    const { name,  description, link, categoryId, photos } = req.body;
-    let  {price}  = req.body;
-
+    const { name,description, link, categoryId, photos } = req.body;
     
-    if (!name || !price || !description || !link || photos.length == 0 ) {
+    let  {price}  = req.body;
+    if (!name || !price || !description  || photos.length == 0 ) {
       return res.status(400).json({ error: 'يجب تعبئة جميع الحقول' });
     }
     

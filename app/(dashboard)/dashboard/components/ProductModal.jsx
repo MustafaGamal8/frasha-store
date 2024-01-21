@@ -13,7 +13,7 @@ const ProductModal = ({ isOpen, onClose ,product,method }) => {
     name: product?.name || '',
     price: product?.price || 0,
     description: product?.description || '',
-    link: product?.link || '',
+    link: product?.link ||  '',
     categoryId:  product?.categoryId || '',
     photos: [],
     photosUrls: product?.photos || [],
@@ -36,7 +36,7 @@ const ProductModal = ({ isOpen, onClose ,product,method }) => {
     const { name, value } = e.target;
     setProductData({
       ...productData,
-      [name]: value,
+      [name]: value ,
     });
   };
 
@@ -99,7 +99,7 @@ const ProductModal = ({ isOpen, onClose ,product,method }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { name, price, description, categoryId, photos,deletedPhotos } = productData;
+    const { name, price, description,link, categoryId, photos,deletedPhotos } = productData;
     if (!name || !price || !description  || !categoryId ) {
       return toast.error('يجب تعبئة جميع الحقول');
     }
@@ -114,17 +114,17 @@ const ProductModal = ({ isOpen, onClose ,product,method }) => {
 
     toast.dismiss(loadingToast);
     setLoading(false);
-    setProductData({
-      name: '',
-      price: 0,
-      description: '',
-      link: '',
-      categoryId: '',
-      photos: [],
-      photosUrls: []
-    })
-    onClose(); 
-    window.location.reload();    
+    // setProductData({
+    //   name: '',
+    //   price: 0,
+    //   description: '',
+    //   link: '',
+    //   categoryId: '',
+    //   photos: [],
+    //   photosUrls: []
+    // })
+    // onClose(); 
+    // window.location.reload();    
   };
 
   return (
@@ -178,6 +178,7 @@ const ProductModal = ({ isOpen, onClose ,product,method }) => {
             
             />
           </div>
+
           <div className="mb-4">
             <label htmlFor="link" className="block mb-2 text-sm font-semibold text-gray-700 text-right">
               رابط المنتج
@@ -192,6 +193,7 @@ const ProductModal = ({ isOpen, onClose ,product,method }) => {
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-primary"
             />
           </div>
+          
           <div className="mb-4">
             <label htmlFor="categoryId" className="block mb-2 text-sm font-semibold text-gray-700 text-right">
               الفئة
@@ -265,7 +267,6 @@ export default ProductModal;
 
 async function PostProduct(product) {
   try {
-
     const response = await axios.post("/api/product", product,{
       headers: {
         Authorization: `Bearer ${getCookie('token')}`
@@ -279,7 +280,8 @@ async function PostProduct(product) {
       toast.success(message || 'تم اضافة المنتج بنجاح');
     }
   } catch (error) {
-    toast.error(error.response.data.error || 'فشل في اضافة المنتج');
+    console.log(error)
+    toast.error(error?.response?.data?.error || 'فشل في اضافة المنتج');
   }
 };
 
