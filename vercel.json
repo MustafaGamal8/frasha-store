@@ -1,0 +1,8 @@
+{
+  "functions": {
+    "myFunction": {
+      "handler": "/pages/api/product.js",
+      "timeout": 120 
+    }
+  }
+}
