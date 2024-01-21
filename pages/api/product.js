@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 export const config = {
   api: {
     bodyParser: {
-      sizeLimit: '10mb'
+      sizeLimit: '400mb'
     }
   }
 }
@@ -66,7 +66,7 @@ const uploadProduct = async (req, res) => {
     const sizeInMB = contentLength / (1024 * 1024);
 
 
-    if (sizeInMB > 10) {
+    if (sizeInMB > 400) {
       return res.status(413).json({ error: 'حجم الملف كبير جدا' });
     }
 
