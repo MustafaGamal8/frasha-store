@@ -28,6 +28,7 @@ export default async function handler(req, res) {
 
 
 const uploadPhotos = async (ProductId, photos) => {
+
   for (const p of photos) {
     const compressedImageBuffer = await sharp(Buffer.from(p.data, 'base64'))
     .resize({ width: 800 })
@@ -60,11 +61,9 @@ const uploadPhotos = async (ProductId, photos) => {
 const uploadProduct = async (req, res) => {
 
   try {
-    
 
     const contentLength = req.headers['content-length'] ? parseInt(req.headers['content-length'], 10) : 0;
     const sizeInMB = contentLength / (1024 * 1024);
-
 
     if (sizeInMB > 400) {
       return res.status(413).json({ error: 'حجم الملف كبير جدا' });
