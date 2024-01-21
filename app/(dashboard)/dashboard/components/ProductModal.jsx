@@ -114,17 +114,17 @@ const ProductModal = ({ isOpen, onClose ,product,method }) => {
 
     toast.dismiss(loadingToast);
     setLoading(false);
-    // setProductData({
-    //   name: '',
-    //   price: 0,
-    //   description: '',
-    //   link: '',
-    //   categoryId: '',
-    //   photos: [],
-    //   photosUrls: []
-    // })
-    // onClose(); 
-    // window.location.reload();    
+    setProductData({
+      name: '',
+      price: 0,
+      description: '',
+      link: '',
+      categoryId: '',
+      photos: [],
+      photosUrls: []
+    })
+    onClose(); 
+    window.location.reload();    
   };
 
   return (
