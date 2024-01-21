@@ -12,6 +12,9 @@ export const config = {
   }
 }
 
+
+export const maxDuration = 120;
+
 export default async function handler(req, res) {
   if (req.method == "POST") {
     const isAdmin = await CheckAuth(req, res);
