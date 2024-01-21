@@ -1,7 +1,7 @@
 {
   "functions": {
     "/pages/api/product.js": {
-      "memory": 30008,
+      "memory": 3008,
       "maxDuration": 120
     }
   }
