@@ -1,5 +1,0 @@
-{
-  "serverless": {
-    "maxDuration": 300000 
-    }
-}
