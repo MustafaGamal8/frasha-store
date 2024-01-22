@@ -13,7 +13,6 @@ export const config = {
 }
 
 
-export const maxDuration = 120;
 
 export default async function handler(req, res) {
   if (req.method == "POST") {
@@ -120,11 +119,11 @@ const uploadProduct = async (req, res) => {
         }
       },
     });
-    res.status(200).json({ message: 'تم اضافة المنتج بنجاح', productId: createdProduct.id });
 
     if (createdProduct) {
       await uploadPhotos( createdProduct.id,photos);      
     }
+    res.status(200).json({ message: 'تم اضافة المنتج بنجاح', productId: createdProduct.id });
 
     
      
