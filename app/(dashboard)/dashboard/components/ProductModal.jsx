@@ -284,7 +284,7 @@ async function PostProduct({name,price,description,link,categoryId,photos}) {
     const { message, error } = response.data;
 
 
-    for (let i = 1; i < photos.length ; i++) {
+    for (let i = 1; i <= photos.length ; i++) {
       await axios.patch("/api/product",{productId:response.data.productId, photos:[photos[i]]}
       ,{
         headers: {
