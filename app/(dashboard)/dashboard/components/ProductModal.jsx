@@ -109,6 +109,11 @@ const ProductModal = ({ isOpen, onClose ,product,method }) => {
     if (method === 'put') {
       await UpdateProduct({ name, price, description, link, categoryId, photos, deletedPhotos,productId: product.id });      
     }else{
+      if (photos.length == 0) {
+        
+    toast.dismiss(loadingToast);
+        return toast.error('يجب ادخال صور');
+      }
       await PostProduct({ name, price, description, link, categoryId, photos });
     }
 
@@ -284,13 +289,17 @@ async function PostProduct({name,price,description,link,categoryId,photos}) {
     const { message, error } = response.data;
 
 
-    for (let i = 1; i <= photos.length ; i++) {
-      await axios.patch("/api/product",{productId:response.data.productId, photos:[photos[i]]}
-      ,{
-        headers: {
-          Authorization: `Bearer ${getCookie('token')}`
-        },
-      } )
+    if(photos.length >1){
+      for (let i = 1; i < photos.length ; i++) {
+        var percentage = (i / photos.length) * 100;
+toast.info(`${ i + '/' + photos.length} , ${percentage.toFixed(2)}% :التقدم`);
+        await axios.patch("/api/product",{productId:response.data.productId, photos:[photos[i]]}
+        ,{
+          headers: {
+            Authorization: `Bearer ${getCookie('token')}`
+          },
+        } )
+      }
     }
 
     if (error) {
