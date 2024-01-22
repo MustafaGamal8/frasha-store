@@ -120,14 +120,14 @@ const uploadProduct = async (req, res) => {
         }
       },
     });
+    res.status(200).json({ message: 'تم اضافة المنتج بنجاح', productId: createdProduct.id });
 
     if (createdProduct) {
       await uploadPhotos( createdProduct.id,photos);      
     }
 
     
-
-    return res.status(200).json({ message: 'تم اضافة المنتج بنجاح', productId: createdProduct.id });
+     
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: 'فشل في اضافة المنتج' });
