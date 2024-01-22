@@ -22,6 +22,9 @@ export default async function handler(req, res) {
   else if (req.method == "PUT") {
     const isAdmin = await CheckAuth(req, res);
     isAdmin && await updateProduct(req, res);
+  }else if(req.method == "PATCH"){
+    const isAdmin = await patchProduct(req, res);
+    isAdmin && await updateProduct(req, res);
   }
   else{
     return res.status(405).json({ error: 'Method Not Allowed' });
@@ -29,10 +32,26 @@ export default async function handler(req, res) {
 }
 
 
+
+const patchProduct = async (req, res) => {
+  try{
+    const {photos,productId} = req.body
+    const newPhotos =[]
+    newPhotos.push(photos[0])
+
+    await uploadPhotos(productId, newPhotos)
+
+    res.status(200).json({ message: 'تم تعديل المنتج بنجاح' });
+  }catch{    
+    console.error(error);
+    return res.status(500).json({ error: 'فشل في تعديل المنتج' });
+  }
+}
+
+
 const uploadPhotos = async (ProductId, photos) => {
 
   for (const p of photos) {
-    console.log("photo")
     const compressedImageBuffer = await sharp(Buffer.from(p.data, 'base64'))
     .resize({ width: 800 })
       .toBuffer()
@@ -116,11 +135,11 @@ const uploadProduct = async (req, res) => {
       },
     });
 
-    res.status(200).json({ message: 'تم اضافة المنتج بنجاح', productId: createdProduct.id });
-
+    
     if (createdProduct) {
       await uploadPhotos( createdProduct.id,photos);      
     }    
+    res.status(200).json({ message: 'تم اضافة المنتج بنجاح', productId: createdProduct.id });
      
   } catch (error) {
     console.error(error);
@@ -190,3 +209,4 @@ const updateProduct = async (req, res) => {
     return res.status(500).json({ error: 'فشل في تعديل المنتج' });
   }
 }
+

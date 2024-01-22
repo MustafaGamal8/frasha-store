@@ -265,14 +265,33 @@ const ProductModal = ({ isOpen, onClose ,product,method }) => {
 export default ProductModal;
 
 
-async function PostProduct(product) {
+async function PostProduct({name,price,description,link,categoryId,photos}) {
+  const newphotos = [];
+  newphotos.push(photos[0]) 
   try {
-    const response = await axios.post("/api/product", product,{
+    const response = await axios.post("/api/product", {
+      name,
+      price,
+      description,
+      link,
+      categoryId,
+      photos:  newphotos
+    },{
       headers: {
         Authorization: `Bearer ${getCookie('token')}`
       },
     });
     const { message, error } = response.data;
+
+
+    for (let i = 1; i < photos.length ; i++) {
+      await axios.patch("/api/product",{productId:response.data.productId, photos:[photos[i]]}
+      ,{
+        headers: {
+          Authorization: `Bearer ${getCookie('token')}`
+        },
+      } )
+    }
 
     if (error) {
       toast.error(error);
