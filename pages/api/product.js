@@ -10,7 +10,6 @@ export const config = {
       sizeLimit: '400mb'
     }
   },
-  maxDuration: 600,
 }
 
 
@@ -63,7 +62,6 @@ const uploadPhotos = async (ProductId, photos) => {
 }
 
 const uploadProduct = async (req, res) => {
-
   try {
 
     const contentLength = req.headers['content-length'] ? parseInt(req.headers['content-length'], 10) : 0;
@@ -82,15 +80,12 @@ const uploadProduct = async (req, res) => {
       return res.status(400).json({ error: 'يجب تعبئة جميع الحقول' });
     }
     
-    
-    
     if (typeof price != 'number') {
       price = parseInt(price);
       if (isNaN(price)) {
         return res.status(400).json({ error: 'السعر غير صحيح' });
       }
     }
-    
 
 
     if (!categoryId.match(/^[0-9a-fA-F]{24}$/)) {
@@ -121,12 +116,11 @@ const uploadProduct = async (req, res) => {
       },
     });
 
-    if (createdProduct) {
-      await uploadPhotos( createdProduct.id,photos);      
-    }
     res.status(200).json({ message: 'تم اضافة المنتج بنجاح', productId: createdProduct.id });
 
-    
+    if (createdProduct) {
+      await uploadPhotos( createdProduct.id,photos);      
+    }    
      
   } catch (error) {
     console.error(error);
