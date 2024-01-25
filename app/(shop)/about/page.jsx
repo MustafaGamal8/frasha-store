@@ -1,5 +1,6 @@
-import { FaInstagram, FaFacebook } from 'react-icons/fa';
+import { FaInstagram, FaFacebook ,FaFacebookMessenger } from 'react-icons/fa';
 import Image from 'next/image';
+import  Link  from 'next/link';
 const Page = () => {
   return (
     <>
@@ -18,12 +19,15 @@ const Page = () => {
       
 
       <div className="flex gap-x-5 mt-10">
-        <a href="https://www.instagram.com/invites/contact/?i=170io0t36bfzc&utm_content=1mayved" target="_blank" rel="noopener noreferrer">
+        <Link href="https://www.instagram.com/invites/contact/?i=170io0t36bfzc&utm_content=1mayved" target="_blank" rel="noopener noreferrer">
           <FaInstagram className="text-4xl text-gray-600 hover:text-gray-900 transition duration-300" />
-        </a>
-        <a href="https://www.facebook.com/fraashastore?mibextid=ZbWKwL" target="_blank" rel="noopener noreferrer">
+        </Link>
+        <Link href={'http://m.me/fraashastore?text=السلام عليكم كنت عايز استفسر عن '} target="_blank" rel="noopener noreferrer">
+          <FaFacebookMessenger className="text-4xl text-gray-600 hover:text-gray-900 transition duration-300" />
+        </Link>
+        <Link href="https://www.facebook.com/fraashastore?mibextid=ZbWKwL" target="_blank" rel="noopener noreferrer">
           <FaFacebook className="text-4xl text-gray-600 hover:text-gray-900 transition duration-300" />
-        </a>
+        </Link>
       </div>
     </div>
     </>

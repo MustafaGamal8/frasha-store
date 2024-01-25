@@ -1,65 +1,34 @@
-import { PrismaClient } from '@prisma/client';
+"use client";
 import Link from 'next/link';
-import { toast } from 'react-toastify';
 import ProductsSection from './ProductsSection';
 import CategoriesSection from './CategoriesSection';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
-
-
-const prisma = new PrismaClient()
-const fetchProducts = () => {
-  try {
-    const response = prisma.product.findMany({
-      take: 8,
-      select: {
-        id: true,
-        name: true,
-        price: true,
-        link: true,
-        categoryId: true,
-        photos: {
-          select: {
-            url: true
-          },
-          take: 1
-        }
+export default function HomeProducts() {
+  const [products, setProducts] = useState([])
+  const [loading, setLoading] = useState(true)
+  useEffect(() => {
+    async function fetchProducts() {
+      setLoading(true)
+      try {
+        const res = await axios.get('/api/products')
+        setProducts(res.data.products)
+      } catch (error) {
+        toast.error(error.response.data.error || 'حدث خطأ ما')
+        console.log(error)
       }
-    });
-
-    return response
-  } catch (error) {
-    console.log(error)
-  }
-}
-
-const fetchCategories = () => {
-  try {
-    const response = prisma.category.findMany({
-      select: {
-        id: true,
-        name: true
-      }
-    })
-    return response
-
-  } catch (error) {
-    console.log(error)
-  }
-
-}
-
-
-export default async function HomeProducts() {
-  const products = await fetchProducts()
-  const categories = await fetchCategories()
-
+      setLoading(false)
+    }
+    fetchProducts()
+  }, [])
 
   return (
     <section className="w-full m-auto my-28 ">
-        <CategoriesSection currentCategory="الكل" categories={categories} />
+      <CategoriesSection currentCategory="الكل" />
 
-      <ProductsSection products={products} />
-      
+      <ProductsSection products={products} isloading={loading} />
 
       <Link
         href={'/products'}

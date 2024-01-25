@@ -41,7 +41,7 @@ const patchProduct = async (req, res) => {
 
     await uploadPhotos(productId, newPhotos)
 
-    res.status(200).json({ message: 'تم تعديل المنتج بنجاح' });
+     return res.status(200).json({ message: 'تم تعديل المنتج بنجاح' });
   }catch{    
     console.error(error);
     return res.status(500).json({ error: 'فشل في تعديل المنتج' });
@@ -50,7 +50,6 @@ const patchProduct = async (req, res) => {
 
 
 const uploadPhotos = async (ProductId, photos) => {
-
   for (const p of photos) {
     const compressedImageBuffer = await sharp(Buffer.from(p.data, 'base64'))
     .resize({ width: 800 })

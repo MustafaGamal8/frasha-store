@@ -5,7 +5,7 @@ export default async function handler(req, res) {
     try {
       const prisma = new PrismaClient();
       const { imgId } = req.query;
-      const image = await prisma.photo.findFirst({
+      const image = await prisma.photo.findUnique({
         where: {
           id: imgId,
         },

@@ -134,7 +134,7 @@ function LoadingProductPage() {
 
           <div className='flex flex-col lg:flex-row items-center justify-center w-full h-full  gap-10'>
 
-            <div className='lg:w-[40%] w-[80%] md:h-[500px] h-[280px] bg-slate-300 animate-pulse'></div>
+            <div className='lg:w-[40%] w-[80%] md:h-[500px] h-[280px] bg-slate-300 animate-pulse mt-10'></div>
 
             <div className='flex flex-col '>
               <div className='md:w-[500px] w-[250px] h-10 bg-slate-500 animate-pulse'></div>

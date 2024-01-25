@@ -3,21 +3,21 @@ import { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { IoMdClose } from 'react-icons/io';
 import { toast } from 'react-toastify';
-import  axios  from 'axios';
+import axios from 'axios';
 import { getCookie } from 'cookies-next';
 Modal.setAppElement('body');
 
-const ProductModal = ({ isOpen, onClose ,product,method }) => {
-  
+const ProductModal = ({ isOpen, onClose, product, method }) => {
+
   const [productData, setProductData] = useState({
     name: product?.name || '',
     price: product?.price || 0,
     description: product?.description || '',
-    link: product?.link ||  '',
-    categoryId:  product?.categoryId || '',
+    link: product?.link || '',
+    categoryId: product?.categoryId || '',
     photos: [],
     photosUrls: product?.photos || [],
-    deletedPhotos:  []
+    deletedPhotos: []
   });
 
   const [selectedCategory, setSelectedCategory] = useState([]);
@@ -36,7 +36,7 @@ const ProductModal = ({ isOpen, onClose ,product,method }) => {
     const { name, value } = e.target;
     setProductData({
       ...productData,
-      [name]: value ,
+      [name]: value,
     });
   };
 
@@ -57,7 +57,7 @@ const ProductModal = ({ isOpen, onClose ,product,method }) => {
         const blob = new Blob([fileBuffer], { type: file.type });
         const blobURL = URL.createObjectURL(blob);
 
-        
+
         newPhotos.push({ data: base64, type: file.type });
         newPhotosUrls.push(blobURL);
 
@@ -77,12 +77,12 @@ const ProductModal = ({ isOpen, onClose ,product,method }) => {
 
 
 
-  const handleRemovePhoto = (index,photoId) => {
+  const handleRemovePhoto = (index, photoId) => {
     if (method == "put") {
-      productData.deletedPhotos = [...productData.deletedPhotos,photoId]
+      productData.deletedPhotos = [...productData.deletedPhotos, photoId]
     }
     removePhoto(index);
-    
+
   }
 
   const removePhoto = (index) => {
@@ -99,19 +99,19 @@ const ProductModal = ({ isOpen, onClose ,product,method }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { name, price, description,link, categoryId, photos,deletedPhotos } = productData;
-    if (!name || !price || !description  || !categoryId ) {
+    const { name, price, description, link, categoryId, photos, deletedPhotos } = productData;
+    if (!name || !price || !description || !categoryId) {
       return toast.error('يجب تعبئة جميع الحقول');
     }
 
     setLoading(true);
     const loadingToast = toast.loading(method == "post" ? 'جاري اضافة المنتج' : 'جاري تعديل المنتج');
     if (method === 'put') {
-      await UpdateProduct({ name, price, description, link, categoryId, photos, deletedPhotos,productId: product.id });      
-    }else{
+      await UpdateProduct({ name, price, description, link, categoryId, photos, deletedPhotos, productId: product.id });
+    } else {
       if (photos.length == 0) {
-        
-    toast.dismiss(loadingToast);
+
+        toast.dismiss(loadingToast);
         return toast.error('يجب ادخال صور');
       }
       await PostProduct({ name, price, description, link, categoryId, photos });
@@ -128,18 +128,18 @@ const ProductModal = ({ isOpen, onClose ,product,method }) => {
       photos: [],
       photosUrls: []
     })
-    onClose(); 
-    window.location.reload();    
+    onClose();
+    window.location.reload();
   };
 
   return (
     <Modal isOpen={isOpen} onRequestClose={onClose} className="fixed inset-0 flex justify-center items-center overflow-y-auto bg-gray-700 bg-opacity-70 z-[10]">
-  <div className="relative flex flex-col justify-between bg-white rounded-lg p-8 w-[90%] max-w-[550px] h-[90%] max-h-[800px] overflow-y-auto mx-4">
-    <button onClick={onClose} className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 transition duration-300">
-      <IoMdClose size={24} />
-    </button>
+      <div className="relative flex flex-col justify-between bg-white rounded-lg p-8 w-[90%] max-w-[550px] h-[90%] max-h-[800px] overflow-y-auto mx-4">
+        <button onClick={onClose} className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 transition duration-300">
+          <IoMdClose size={24} />
+        </button>
 
-        <h2 className="text-2xl font-bold mb-4 text-right">{method == "post" ? "إضافة منتج جديد" :"تعديل المنتج"}</h2>
+        <h2 className="text-2xl font-bold mb-4 text-right">{method == "post" ? "إضافة منتج جديد" : "تعديل المنتج"}</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label htmlFor="name" className="block mb-2 text-sm font-semibold text-gray-700 text-right">
@@ -180,7 +180,7 @@ const ProductModal = ({ isOpen, onClose ,product,method }) => {
               onChange={handleInputChange}
               disabled={loading}
               className="w-full min-h-[110px] border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-primary"
-            
+
             />
           </div>
 
@@ -198,7 +198,7 @@ const ProductModal = ({ isOpen, onClose ,product,method }) => {
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-primary"
             />
           </div>
-          
+
           <div className="mb-4">
             <label htmlFor="categoryId" className="block mb-2 text-sm font-semibold text-gray-700 text-right">
               الفئة
@@ -270,9 +270,9 @@ const ProductModal = ({ isOpen, onClose ,product,method }) => {
 export default ProductModal;
 
 
-async function PostProduct({name,price,description,link,categoryId,photos}) {
+async function PostProduct({ name, price, description, link, categoryId, photos }) {
   const newphotos = [];
-  newphotos.push(photos[0]) 
+  newphotos.push(photos[0])
   try {
     const response = await axios.post("/api/product", {
       name,
@@ -280,8 +280,8 @@ async function PostProduct({name,price,description,link,categoryId,photos}) {
       description,
       link,
       categoryId,
-      photos:  newphotos
-    },{
+      photos: newphotos
+    }, {
       headers: {
         Authorization: `Bearer ${getCookie('token')}`
       },
@@ -289,16 +289,16 @@ async function PostProduct({name,price,description,link,categoryId,photos}) {
     const { message, error } = response.data;
 
 
-    if(photos.length >1){
-      for (let i = 1; i < photos.length ; i++) {
+    if (photos.length > 1) {
+      for (let i = 1; i < photos.length; i++) {
         var percentage = (i / photos.length) * 100;
-toast.info(`${ i + '/' + photos.length} , ${percentage.toFixed(2)}% :التقدم`);
-        await axios.patch("/api/product",{productId:response.data.productId, photos:[photos[i]]}
-        ,{
-          headers: {
-            Authorization: `Bearer ${getCookie('token')}`
-          },
-        } )
+        toast.info(`${(i+1) + '/' + photos.length} , ${percentage.toFixed(2)}% :التقدم`);
+        await axios.patch("/api/product", { productId: response.data.productId, photos: [photos[i]] }
+          , {
+            headers: {
+              Authorization: `Bearer ${getCookie('token')}`
+            },
+          })
       }
     }
 
@@ -318,7 +318,7 @@ toast.info(`${ i + '/' + photos.length} , ${percentage.toFixed(2)}% :التقد�
 async function UpdateProduct(product) {
   try {
 
-    const response = await axios.put("/api/product", product,{
+    const response = await axios.put("/api/product", product, {
       headers: {
         Authorization: `Bearer ${getCookie('token')}`
       },
@@ -327,12 +327,12 @@ async function UpdateProduct(product) {
 
     if (error) {
       toast.error(error);
-    }else {
+    } else {
       toast.success(message || 'تم تعديل المنتج بنجاح');
     }
-    
+
   } catch (error) {
     console.log(error)
-    toast.error(error.response.data.error || 'فشل في تعديل المنتج');    
-  }  
+    toast.error(error.response.data.error || 'فشل في تعديل المنتج');
+  }
 }

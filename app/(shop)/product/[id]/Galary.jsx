@@ -24,7 +24,7 @@ function Slider({ photos }) {
             <SwiperSlide key={index} className=' h-full w-full flex justify-center items-center'>
               <div className="flex items-center justify-center w-full h-full ">
                 <img
-                  className="w-[500px] h-full object-contain rounded-md"
+                  className="w-full h-max object-cover rounded-md"
                   src={photo.url}
                   alt={"صورة المنتج"}
                 />
