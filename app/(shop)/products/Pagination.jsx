@@ -38,7 +38,7 @@ export default function Pagination  ({ currentPage, pageCount, onPageChange })  
         {numbers.map((number) => (
           <li key={number} onClick={() => onPageChange(number)} className={`text-primary hover:text-secondary cursor-pointer p-1 ${currentPage == number ? 'bg-slate-300 rounded text-white' : ''}`}>{number}</li>
         ))}
-        <li>-</li>
+        <li>--</li>
         {
           <li onClick={() => onPageChange(lastNumber)} className="text-primary hover:text-secondary cursor-pointer ">{lastNumber}</li>
 

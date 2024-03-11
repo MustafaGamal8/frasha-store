@@ -13,7 +13,7 @@ export default function CategoriesSection({ currentCategory }) {
       setCategories(res.data);
     }
     fetchCategories();
-  })
+  },[])
 
 
   return (

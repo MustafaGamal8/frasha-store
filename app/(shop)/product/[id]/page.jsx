@@ -7,6 +7,7 @@ import GetProduct from '../../logic/getProduct';
 import Galary from './Galary';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
+import MyFlickityComponent from '../../components/Slider';
 
 const ProductDetail = () => {
   const [product, setProduct] = useState(null);
@@ -72,7 +73,15 @@ const ProductDetail = () => {
                   )
                   :
                   <div className="lg:w-2/5 w-full h-96 mx-auto my-10 ">
-                    <Galary photos={product.photos} />
+                    <MyFlickityComponent >
+                      {
+                        product.photos?.map((photo, index) => (
+                          <div key={index} className=" w-full lg:h-[500px] md:h-[400px]  h-[300px]   flex items-center justify-center" >
+                            <img  src={ photo?.url || '/logo.png'} className='w-full  md:w-[450px] object-cover my-10  rounded-md' alt="" />
+                          </div>
+                        ))
+                      }
+                    </MyFlickityComponent>
                   </div>
               }
 
