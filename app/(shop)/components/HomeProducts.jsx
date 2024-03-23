@@ -1,47 +1,34 @@
-"use client"
+"use client";
 import Link from 'next/link';
+import ProductsSection from './ProductsSection';
 import CategoriesSection from './CategoriesSection';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import ProductsByCategorySection from './ProductsByCategorySection';
 
 export default function HomeProducts() {
+  const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
-  const [categories, setCategories] = useState([]);
-
   useEffect(() => {
-    async function fetchCategories() {
+    async function fetchProducts() {
+      setLoading(true)
       try {
-        const res = await axios.get('/api/categories-with-products');
-        setCategories( shuffleArray(res.data).slice(0, 4));
-        setLoading(false);
+        const res = await axios.get('/api/products')
+        setProducts(res.data.products)
       } catch (error) {
-        toast.error('Failed to fetch categories');
+        toast.error(error.response.data.error || 'حدث خطأ ما')
+        console.log(error)
       }
+      setLoading(false)
     }
-
-    fetchCategories();
-  }, []);
-
-  // Function to shuffle array
-  const shuffleArray = (array) => {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  };
+    fetchProducts()
+  }, [])
 
   return (
     <section className="w-full m-auto my-28 ">
       <CategoriesSection currentCategory="الكل" />
 
-      <div className='w-full flex flex-col gap-4 my-10'>
-        {categories.map((category, index) => (
-          <ProductsByCategorySection key={index} isloading={loading} category={category} />
-        ))}
-      </div>
+      <ProductsSection products={products} isloading={loading} />
 
       <Link
         href={'/products'}
